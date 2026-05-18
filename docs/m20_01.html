@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="theme-color" content="#1d9bf0">
+  <title>m20_01 専用 — 2026-05-18</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+      background: #f5f7fa;
+      color: #1a1a2e;
+      padding: 16px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    header.page-header { max-width: 1200px; margin: 0 auto 16px; }
+    h1 { font-size: 1.4rem; margin-bottom: 4px; color: #1d9bf0; }
+    .meta { font-size: 0.85rem; color: #666; }
+    .card {
+      background: white;
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .card-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; }
+    .slug { font-weight: 700; color: #1d9bf0; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.95rem; }
+    .handle { font-size: 0.85rem; color: #555; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .char-count { font-size: 0.75rem; color: #888; }
+    .profile {
+      font-size: 0.78rem;
+      color: #666;
+      padding: 8px 10px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      border-left: 3px solid #1d9bf0;
+    }
+    .post-text {
+      background: #fff8e7;
+      padding: 14px;
+      border-radius: 10px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      font-size: 0.95rem;
+      border: 1px solid #f0e1b8;
+      min-height: 80px;
+    }
+    .post-button {
+      display: block;
+      text-align: center;
+      background: #1d9bf0;
+      color: white !important;
+      padding: 14px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 700;
+      transition: background 0.2s, transform 0.05s;
+      font-size: 0.95rem;
+    }
+    .post-button:hover { background: #1a8cd8; }
+    .post-button:active { background: #1681c4; transform: scale(0.98); }
+    .post-button.disabled {
+      background: #ccc !important;
+      pointer-events: none;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+    main.single { max-width: 600px; margin: 0 auto; }
+    .warning-banner {
+      background: linear-gradient(135deg, #fff3cd, #ffe8a8);
+      border: 2px solid #ffc107;
+      padding: 18px;
+      border-radius: 14px;
+      margin-bottom: 14px;
+      text-align: center;
+    }
+    .warning-banner h2 {
+      font-size: 1.1rem;
+      margin-bottom: 6px;
+      color: #663d00;
+    }
+    .warning-banner strong {
+      font-size: 1.3rem;
+      color: #1d9bf0;
+      display: block;
+      margin: 4px 0;
+    }
+    .warning-banner p { font-size: 0.85rem; color: #663d00; }
+    .login-check {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 14px;
+      background: #f0f8ff;
+      border: 2px solid #1d9bf0;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    .login-check input[type="checkbox"] {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+      margin-top: 1px;
+      cursor: pointer;
+    }
+    .login-check.checked {
+      background: #e8f5e9;
+      border-color: #4caf50;
+    }
+    .back-link {
+      display: inline-block;
+      margin-top: 16px;
+      color: #888;
+      font-size: 0.85rem;
+      text-decoration: none;
+    }
+    .back-link:hover { color: #1d9bf0; }
+  </style>
+</head>
+<body>
+  <main class="single">
+    <div class="warning-banner">
+      <h2>このページは ↓</h2>
+      <strong>ネメシス</strong>
+      <p>専用です。他のアカウントでログイン中の場合は投稿しないでください。</p>
+    </div>
+
+    <article class="card" data-slug="m20_01">
+      <header class="card-header">
+        <span class="slug">m20_01</span>
+        <span class="char-count">74字</span>
+      </header>
+      <div class="profile">- ハンドルネーム: ネメシス<br>- 年代/性別: 20代前半 男性<br>- 職業: フリーター<br>- 居住地ニュアンス: 関東の郊外（通勤圏内）<br>- 家族構成: 実家暮らし（親と弟）<br>- ポケカ歴: 復帰勢(小5で引退、去年秋に再開)</div>
+      <div class="post-text">バイト終わり。今週末の大会に向けてデッキ調整したいけど、環境の動きが早すぎてついていくのがマジで大変じゃん。メタゲーム完全に読み直さないといけない…</div>
+
+      <label class="login-check" id="login-label">
+        <input type="checkbox" id="login-confirm">
+        <span>👆 ネメシス でログイン中であることを確認しました</span>
+      </label>
+
+      <a class="post-button disabled" id="post-btn" href="https://twitter.com/intent/tweet?text=%E3%83%90%E3%82%A4%E3%83%88%E7%B5%82%E3%82%8F%E3%82%8A%E3%80%82%E4%BB%8A%E9%80%B1%E6%9C%AB%E3%81%AE%E5%A4%A7%E4%BC%9A%E3%81%AB%E5%90%91%E3%81%91%E3%81%A6%E3%83%87%E3%83%83%E3%82%AD%E8%AA%BF%E6%95%B4%E3%81%97%E3%81%9F%E3%81%84%E3%81%91%E3%81%A9%E3%80%81%E7%92%B0%E5%A2%83%E3%81%AE%E5%8B%95%E3%81%8D%E3%81%8C%E6%97%A9%E3%81%99%E3%81%8E%E3%81%A6%E3%81%A4%E3%81%84%E3%81%A6%E3%81%84%E3%81%8F%E3%81%AE%E3%81%8C%E3%83%9E%E3%82%B8%E3%81%A7%E5%A4%A7%E5%A4%89%E3%81%98%E3%82%83%E3%82%93%E3%80%82%E3%83%A1%E3%82%BF%E3%82%B2%E3%83%BC%E3%83%A0%E5%AE%8C%E5%85%A8%E3%81%AB%E8%AA%AD%E3%81%BF%E7%9B%B4%E3%81%95%E3%81%AA%E3%81%84%E3%81%A8%E3%81%84%E3%81%91%E3%81%AA%E3%81%84%E2%80%A6" target="_blank" rel="noopener noreferrer">
+        🐦 X で投稿する
+      </a>
+    </article>
+
+    <a class="back-link" href="index.html">← 全体ダッシュボードに戻る</a>
+  </main>
+
+  <script>
+    const checkbox = document.getElementById('login-confirm');
+    const btn = document.getElementById('post-btn');
+    const label = document.getElementById('login-label');
+
+    checkbox.addEventListener('change', function() {
+      if (this.checked) {
+        btn.classList.remove('disabled');
+        label.classList.add('checked');
+      } else {
+        btn.classList.add('disabled');
+        label.classList.remove('checked');
+      }
+    });
+
+    btn.addEventListener('click', function(e) {
+      if (!checkbox.checked) {
+        e.preventDefault();
+        alert('まず "ログイン中であることを確認しました" にチェックを入れてください');
+        return false;
+      }
+    });
+  </script>
+</body>
+</html>

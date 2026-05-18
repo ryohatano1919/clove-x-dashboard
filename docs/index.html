@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="theme-color" content="#1d9bf0">
+  <title>Clove X投稿ダッシュボード — 2026-05-18</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+      background: #f5f7fa;
+      color: #1a1a2e;
+      padding: 16px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    header.page-header { max-width: 1200px; margin: 0 auto 16px; }
+    h1 { font-size: 1.4rem; margin-bottom: 4px; color: #1d9bf0; }
+    .meta { font-size: 0.85rem; color: #666; }
+    .card {
+      background: white;
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .card-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; }
+    .slug { font-weight: 700; color: #1d9bf0; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.95rem; }
+    .handle { font-size: 0.85rem; color: #555; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .char-count { font-size: 0.75rem; color: #888; }
+    .profile {
+      font-size: 0.78rem;
+      color: #666;
+      padding: 8px 10px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      border-left: 3px solid #1d9bf0;
+    }
+    .post-text {
+      background: #fff8e7;
+      padding: 14px;
+      border-radius: 10px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      font-size: 0.95rem;
+      border: 1px solid #f0e1b8;
+      min-height: 80px;
+    }
+    .post-button {
+      display: block;
+      text-align: center;
+      background: #1d9bf0;
+      color: white !important;
+      padding: 14px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 700;
+      transition: background 0.2s, transform 0.05s;
+      font-size: 0.95rem;
+    }
+    .post-button:hover { background: #1a8cd8; }
+    .post-button:active { background: #1681c4; transform: scale(0.98); }
+    .post-button.disabled {
+      background: #ccc !important;
+      pointer-events: none;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    @media (min-width: 768px) { .cards { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 1100px) { .cards { grid-template-columns: 1fr 1fr 1fr; } }
+    .card-actions { display: flex; flex-direction: column; gap: 8px; }
+    .account-page-link {
+      display: block;
+      text-align: center;
+      background: #eef5fb;
+      color: #1d9bf0 !important;
+      padding: 8px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+    .account-page-link:hover { background: #d8e9f5; }
+  </style>
+</head>
+<body>
+  <header class="page-header">
+    <h1>Clove X投稿ダッシュボード(全体)</h1>
+    <div class="meta">📅 2026-05-18 ・ 20件 ・ 各カードから個別ページへ移動できます</div>
+  </header>
+  <main class="cards">
+    <article class="card" data-slug="f20_01">
+      <header class="card-header">
+        <span class="slug">f20_01</span>
+        <span class="handle">@ねこまっちゃ</span>
+        <span class="char-count">76字</span>
+      </header>
+      <div class="profile">- ハンドルネーム: ねこまっちゃ<br>- 年代/性別: 20代前半 女性<br>- 職業: 受付<br>- 居住地ニュアンス: 関東（都市部）<br>- 家族構成: 一人暮らし（実家は地方）<br>- ポケカ歴: 復帰勢（小学校高学年まで遊んでいた）</div>
+      <div class="post-text">仕事終わり。今週末は大会参加予定だから、帰ったらデッキ調整しなきゃ。環境、変わってますねって感じだし、昼休みに見た動画も参考にしながら組み直してみるか。</div>
+      <div class="card-actions">
+        <a class="post-button" href="https://twitter.com/intent/tweet?text=%E4%BB%95%E4%BA%8B%E7%B5%82%E3%82%8F%E3%82%8A%E3%80%82%E4%BB%8A%E9%80%B1%E6%9C%AB%E3%81%AF%E5%A4%A7%E4%BC%9A%E5%8F%82%E5%8A%A0%E4%BA%88%E5%AE%9A%E3%81%A0%E3%81%8B%E3%82%89%E3%80%81%E5%B8%B0%E3%81%A3%E3%81%9F%E3%82%89%E3%83%87%E3%83%83%E3%82%AD%E8%AA%BF%E6%95%B4%E3%81%97%E3%81%AA%E3%81%8D%E3%82%83%E3%80%82%E7%92%B0%E5%A2%83%E3%80%81%E5%A4%89%E3%82%8F%E3%81%A3%E3%81%A6%E3%81%BE%E3%81%99%E3%81%AD%E3%81%A3%E3%81%A6%E6%84%9F%E3%81%98%E3%81%A0%E3%81%97%E3%80%81%E6%98%BC%E4%BC%91%E3%81%BF%E3%81%AB%E8%A6%8B%E3%81%9F%E5%8B%95%E7%94%BB%E3%82%82%E5%8F%82%E8%80%83%E3%81%AB%E3%81%97%E3%81%AA%E3%81%8C%E3%82%89%E7%B5%84%E3%81%BF%E7%9B%B4%E3%81%97%E3%81%A6%E3%81%BF%E3%82%8B%E3%81%8B%E3%80%82" target="_blank" rel="noopener noreferrer">
+          🐦 X で投稿(現在ログイン中のアカ)
+        </a>
+        <a class="account-page-link" href="f20_01.html">
+          👤 f20_01 専用ページへ →
+        </a>
+      </div>
+    </article>
+    <article class="card" data-slug="f20_02">
+      <header class="card-header">
+        <span class="slug">f20_02</span>
+        <span class="handle">@あめちゃん🍬</span>
+        <span class="char-count">67字</span>
+      </header>
+      <div class="profile">- ハンドルネーム: あめちゃん🍬<br>- 年代/性別: 20代中盤 女性<br>- 職業: 経理事務<br>- 居住地ニュアンス: 関東（都心近郊）<br>- 家族構成: 一人暮らし（会社近くの賃貸）<br>- ポケカ歴: 復帰勢（2020年秋、テレワーク中に懐かしさで再開）</div>
+      <div class="post-text">夕方の仕事終わりはカード相場チェックが習慣になってしまった。推し活費の予算管理も兼ねて。明日の給与振込まであと一週間、ここは堪えるか…</div>
+      <div class="card-actions">
+        <a class="post-button" href="https://twitter.com/intent/tweet?text=%E5%A4%95%E6%96%B9%E3%81%AE%E4%BB%95%E4%BA%8B%E7%B5%82%E3%82%8F%E3%82%8A%E3%81%AF%E3%82%AB%E3%83%BC%E3%83%89%E7%9B%B8%E5%A0%B4%E3%83%81%E3%82%A7%E3%83%83%E3%82%AF%E3%81%8C%E7%BF%92%E6%85%A3%E3%81%AB%E3%81%AA%E3%81%A3%E3%81%A6%E3%81%97%E3%81%BE%E3%81%A3%E3%81%9F%E3%80%82%E6%8E%A8%E3%81%97%E6%B4%BB%E8%B2%BB%E3%81%AE%E4%BA%88%E7%AE%97%E7%AE%A1%E7%90%86%E3%82%82%E5%85%BC%E3%81%AD%E3%81%A6%E3%80%82%E6%98%8E%E6%97%A5%E3%81%AE%E7%B5%A6%E4%B8%8E%E6%8C%AF%E8%BE%BC%E3%81%BE%E3%81%A7%E3%81%82%E3%81%A8%E4%B8%80%E9%80%B1%E9%96%93%E3%80%81%E3%81%93%E3%81%93%E3%81%AF%E5%A0%AA%E3%81%88%E3%82%8B%E3%81%8B%E2%80%A6" target="_blank" rel="noopener noreferrer">
+          🐦 X で投稿(現在ログイン中のアカ)
+        </a>
+        <a class="account-page-link" href="f20_02.html">
+          👤 f20_02 専用ページへ →
+        </a>
+      </div>
+    </article>
+    <article class="card" data-slug="f20_03">
+      <header class="card-header">
+        <span class="slug">f20_03</span>
+        <span class="handle">@mitsuki_design</span>
+        <span class="char-count">66字</span>
+      </header>
+      <div class="profile">- ハンドルネーム: @mitsuki_design<br>- 年代/性別: 20代後半 女性<br>- 職業: Webディレクター<br>- 居住地ニュアンス: 関東（都内勤務、近郊在住）<br>- 家族構成: 一人暮らし<br>- ポケカ歴: 復帰勢（高校時代に遊んでいて、社会人になって2年前に再開）</div>
+      <div class="post-text">仕事中にイラレのポートフォリオ見てたら、ポケカのカード描いてる人発見。この方の絵、好きなんだよな。推しキャラのカード化されないかな…</div>
+      <div class="card-actions">
+        <a class="post-button" href="https://twitter.com/intent/tweet?text=%E4%BB%95%E4%BA%8B%E4%B8%AD%E3%81%AB%E3%82%A4%E3%83%A9%E3%83%AC%E3%81%AE%E3%83%9D%E3%83%BC%E3%83%88%E3%83%95%E3%82%A9%E3%83%AA%E3%82%AA%E8%A6%8B%E3%81%A6%E3%81%9F%E3%82%89%E3%80%81%E3%83%9D%E3%82%B1%E3%82%AB%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E6%8F%8F%E3%81%84%E3%81%A6%E3%82%8B%E4%BA%BA%E7%99%BA%E8%A6%8B%E3%80%82%E3%81%93%E3%81%AE%E6%96%B9%E3%81%AE%E7%B5%B5%E3%80%81%E5%A5%BD%E3%81%8D%E3%81%AA%E3%82%93%E3%81%A0%E3%82%88%E3%81%AA%E3%80%82%E6%8E%A8%E3%81%97%E3%82%AD%E3%83%A3%E3%83%A9%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E5%8C%96%E3%81%95%E3%82%8C%E3%81%AA%E3%81%84%E3%81%8B%E3%81%AA%E2%80%A6" target="_blank" rel="noopener noreferrer">
+          🐦 X で投稿(現在ログイン中のアカ)
+        </a>
+        <a class="account-page-link" href="f20_03.html">
+          👤 f20_03 専用ページへ →
+        </a>
+      </div>
+    </article>
+    <article class="card" data-slug="f20_04">
+      <header class="card-header">
+        <span class="slug">f20_04</span>
+        <span class="handle">@夜勤明けの沼</span>
+        <span class="char-count">85字</span>
+      </header>
+      <div class="profile">- ハンドルネーム: 夜勤明けの沼<br>- 年代/性別: 20代前半 女性<br>- 職業: 看護師<br>- 居住地ニュアンス: 関東郊外（都心に勤務）<br>- 家族構成: 一人暮らし（実家は地方）<br>- ポケカ歴: ベテラン(継続的に追ってる)</div>
+      <div class="post-text">夕方だし、そろそろ帰宅準備か。今夜は推し絵の新しいバージョン探そうかな。ピカチュウexのフルアート、まだ持ってないやつあるんだよな。欲しすぎて推し活になってる😅 #ポケカ</div>
+      <div class="card-actions">
+        <a class="post-button" href="https://twitter.com/intent/tweet?text=%E5%A4%95%E6%96%B9%E3%81%A0%E3%81%97%E3%80%81%E3%81%9D%E3%82%8D%E3%81%9D%E3%82%8D%E5%B8%B0%E5%AE%85%E6%BA%96%E5%82%99%E3%81%8B%E3%80%82%E4%BB%8A%E5%A4%9C%E3%81%AF%E6%8E%A8%E3%81%97%E7%B5%B5%E3%81%AE%E6%96%B0%E3%81%97%E3%81%84%E3%83%90%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B3%E6%8E%A2%E3%81%9D%E3%81%86%E3%81%8B%E3%81%AA%E3%80%82%E3%83%94%E3%82%AB%E3%83%81%E3%83%A5%E3%82%A6ex%E3%81%AE%E3%83%95%E3%83%AB%E3%82%A2%E3%83%BC%E3%83%88%E3%80%81%E3%81%BE%E3%81%A0%E6%8C%81%E3%81%A3%E3%81%A6%E3%81%AA%E3%81%84%E3%82%84%E3%81%A4%E3%81%82%E3%82%8B%E3%82%93%E3%81%A0%E3%82%88%E3%81%AA%E3%80%82%E6%AC%B2%E3%81%97%E3%81%99%E3%81%8E%E3%81%A6%E6%8E%A8%E3%81%97%E6%B4%BB%E3%81%AB%E3%81%AA%E3%81%A3%E3%81%A6%E3%82%8B%F0%9F%98%85%20%23%E3%83%9D%E3%82%B1%E3%82%AB" target="_blank" rel="noopener noreferrer">
+          🐦 X で投稿(現在ログイン中のアカ)
+        </a>
+        <a class="account-page-link" href="f20_04.html">
+          👤 f20_04 専用ページへ →
+        </a>
+      </div>
+    </article>
+    <article class="card" data-slug="f20_05">
+      <header class="card-header">
+        <span class="slug">f20_05</span>
+        <span class="handle">@みずき🌙</span>
+        <span class="char-count">64字</span>
+      </header>
+      <div class="profile">- ハンドルネーム: みずき🌙<br>- 年代/性別: 20代後半 女性<br>- 職業: 中堅事務職<br>- 居住地ニュアンス: 関東(都市近郊、駅徒歩15分圏内)<br>- 家族構成: 一人暮らし(実家は東北、帰省は年2回程度)<br>- ポケカ歴: 復帰勢(小学校時代にカード集めてた懐かしい〜レベル)</div>
+      <div class="post-text">夕方だし、そろそろ帰宅準備か。週末のオリパ狙い物リストでも作っときました。結局のところ、計画立てて引くほうが後悔少ないですね 💭</div>
+      <div class="card-actions">
+        <a class="post-button" href="https://twitter.com/intent/tweet?text=%E5%A4%95%E6%96%B9%E3%81%A0%E3%81%97%E3%80%81%E3%81%9D%E3%82%8D%E3%81%9D%E3%82%8D%E5%B8%B0%E5%AE%85%E6%BA%96%E5%82%99%E3%81%8B%E3%80%82%E9%80%B1%E6%9C%AB%E3%81%AE%E3%82%AA%E3%83%AA%E3%83%91%E7%8B%99%E3%81%84%E7%89%A9%E3%83%AA%E3%82%B9%E3%83%88%E3%81%A7%E3%82%82%E4%BD%9C%E3%81%A3%E3%81%A8%E3%81%8D%E3%81%BE%E3%81%97%E3%81%9F%E3%80%82%E7%B5%90%E5%B1%80%E3%81%AE%E3%81%A8%E3%81%93%E3%82%8D%E3%80%81%E8%A8%88%E7%94%BB%E7%AB%8B%E3%81%A6%E3%81%A6%E5%BC%95%E3%81%8F%E3%81%BB%E3%81%86%E3%81%8C%E5%BE%8C%E6%82%94%E5%B0%91%E3%81%AA%E3%81%84%E3%81%A7%E3%81%99%E3%81%AD%20%F0%9F%92%AD" target="_blank" rel="noopener noreferrer">
+          🐦 X で投稿(現在ログイン中のアカ)
+        </a>
+        <a class="account-page-link" href="f20_05.html">
+          👤 f20_05 専用ページへ →
+        </a>
+      </div>
+    </article>
+    <article class="card" data-slug="m20_01">
+      <header class="card-header">
+        <span class="slug">m20_01</span>
+        <span class="handle">@ネメシス</span>
+        <span class="char-count">74字</span>
+      </header>
+      <div class="profile">- ハンドルネーム: ネメシス<br>- 年代/性別: 20代前半 男性<br>- 職業: フリーター<br>- 居住地ニュアンス: 関東の郊外（通勤圏内）<br>- 家族構成: 実家暮らし（親と弟）<br>- ポケカ歴: 復帰勢(小5で引退、去年秋に再開)</div>
+      <div class="post-text">バイト終わり。今週末の大会に向けてデッキ調整したいけど、環境の動きが早すぎてついていくのがマジで大変じゃん。メタゲーム完全に読み直さないといけない…</div>
+      <div class="card-actions">
+        <a class="post-button" href="https://twitter.com/intent/tweet?text=%E3%83%90%E3%82%A4%E3%83%88%E7%B5%82%E3%82%8F%E3%82%8A%E3%80%82%E4%BB%8A%E9%80%B1%E6%9C%AB%E3%81%AE%E5%A4%A7%E4%BC%9A%E3%81%AB%E5%90%91%E3%81%91%E3%81%A6%E3%83%87%E3%83%83%E3%82%AD%E8%AA%BF%E6%95%B4%E3%81%97%E3%81%9F%E3%81%84%E3%81%91%E3%81%A9%E3%80%81%E7%92%B0%E5%A2%83%E3%81%AE%E5%8B%95%E3%81%8D%E3%81%8C%E6%97%A9%E3%81%99%E3%81%8E%E3%81%A6%E3%81%A4%E3%81%84%E3%81%A6%E3%81%84%E3%81%8F%E3%81%AE%E3%81%8C%E3%83%9E%E3%82%B8%E3%81%A7%E5%A4%A7%E5%A4%89%E3%81%98%E3%82%83%E3%82%93%E3%80%82%E3%83%A1%E3%82%BF%E3%82%B2%E3%83%BC%E3%83%A0%E5%AE%8C%E5%85%A8%E3%81%AB%E8%AA%AD%E3%81%BF%E7%9B%B4%E3%81%95%E3%81%AA%E3%81%84%E3%81%A8%E3%81%84%E3%81%91%E3%81%AA%E3%81%84%E2%80%A6" target="_blank" rel="noopener noreferrer">
+          🐦 X で投稿(現在ログイン中のアカ)
+        </a>
+        <a class="account-page-link" href="m20_01.html">
+          👤 m20_01 専用ページへ →
+        </a>
+      </div>
+    </article>
+    <article class="card" data-slug="m20_02">
+      <header class="card-header">
+        <span class="slug">m20_02</span>
+        <span class="handle">@ねこぜ</span>
+        <span class="char-count">68字</span>
+      </header>
+      <div class="profile">- ハンドルネーム: ねこぜ<br>- 年代/性別: 20代中盤 男性<br>- 職業: SE<br>- 居住地ニュアンス: 関東(神奈川県内の都市部)<br>- 家族構成: 一人暮らし(会社近くのアパート)<br>- ポケカ歴: 復帰勢(小学生時代にやってて、高校からブランク→2年前に再開)</div>
+      <div class="post-text">夕方の買い物ついでにカードショップ寄ったらナタネのSAR見つけた。もう持ってるやつだけど、このイラスト、いいんよ。結局買ってしまった 😅</div>
+      <div class="card-actions">
+        <a class="post-button" href="https://twitter.com/intent/tweet?text=%E5%A4%95%E6%96%B9%E3%81%AE%E8%B2%B7%E3%81%84%E7%89%A9%E3%81%A4%E3%81%84%E3%81%A7%E3%81%AB%E3%82%AB%E3%83%BC%E3%83%89%E3%82%B7%E3%83%A7%E3%83%83%E3%83%97%E5%AF%84%E3%81%A3%E3%81%9F%E3%82%89%E3%83%8A%E3%82%BF%E3%83%8D%E3%81%AESAR%E8%A6%8B%E3%81%A4%E3%81%91%E3%81%9F%E3%80%82%E3%82%82%E3%81%86%E6%8C%81%E3%81%A3%E3%81%A6%E3%82%8B%E3%82%84%E3%81%A4%E3%81%A0%E3%81%91%E3%81%A9%E3%80%81%E3%81%93%E3%81%AE%E3%82%A4%E3%83%A9%E3%82%B9%E3%83%88%E3%80%81%E3%81%84%E3%81%84%E3%82%93%E3%82%88%E3%80%82%E7%B5%90%E5%B1%80%E8%B2%B7%E3%81%A3%E3%81%A6%E3%81%97%E3%81%BE%E3%81%A3%E3%81%9F%20%F0%9F%98%85" target="_blank" rel="noopener noreferrer">
+          🐦 X で投稿(現在ログイン中のアカ)
+        </a>
+        <a class="account-page-link" href="m20_02.html">
+          👤 m20_02 専用ページへ →
+        </a>
+      </div>
+    </article>
+    <article class="card" data-slug="m20_03">
+      <header class="card-header">
+        <span class="slug">m20_03</span>
+        <span class="handle">@deck_tuner</span>
+        <span class="char-count">77字</span>
+      </header>
+      <div class="profile">- ハンドルネーム: @deck_tuner<br>- 年代/性別: 20代後半 男性<br>- 職業: フリーランス（Webデザイナー）<br>- 居住地ニュアンス: 関東（神奈川県内の都市部）<br>- 家族構成: 一人暮らし<br>- ポケカ歴: 新規（半年前から）</div>
+      <div class="post-text">休み前だからデッキいじってみたけど、環境が変わると推しも変わるんだよね。レジギガスex試したら思ったより回転率良くて、週末の対戦会で使ってみるか。#ポケカ</div>
+      <div class="card-actions">
+        <a class="post-button" href="https://twitter.com/intent/tweet?text=%E4%BC%91%E3%81%BF%E5%89%8D%E3%81%A0%E3%81%8B%E3%82%89%E3%83%87%E3%83%83%E3%82%AD%E3%81%84%E3%81%98%E3%81%A3%E3%81%A6%E3%81%BF%E3%81%9F%E3%81%91%E3%81%A9%E3%80%81%E7%92%B0%E5%A2%83%E3%81%8C%E5%A4%89%E3%82%8F%E3%82%8B%E3%81%A8%E6%8E%A8%E3%81%97%E3%82%82%E5%A4%89%E3%82%8F%E3%82%8B%E3%82%93%E3%81%A0%E3%82%88%E3%81%AD%E3%80%82%E3%83%AC%E3%82%B8%E3%82%AE%E3%82%AC%E3%82%B9ex%E8%A9%A6%E3%81%97%E3%81%9F%E3%82%89%E6%80%9D%E3%81%A3%E3%81%9F%E3%82%88%E3%82%8A%E5%9B%9E%E8%BB%A2%E7%8E%87%E8%89%AF%E3%81%8F%E3%81%A6%E3%80%81%E9%80%B1%E6%9C%AB%E3%81%AE%E5%AF%BE%E6%88%A6%E4%BC%9A%E3%81%A7%E4%BD%BF%E3%81%A3%E3%81%A6%E3%81%BF%E3%82%8B%E3%81%8B%E3%80%82%23%E3%83%9D%E3%82%B1%E3%82%AB" target="_blank" rel="noopener noreferrer">
+          🐦 X で投稿(現在ログイン中のアカ)
+        </a>
+        <a class="account-page-link" href="m20_03.html">
+          👤 m20_03 専用ページへ →
+        </a>
+      </div>
+    </article>
+    <article class="card" data-slug="m20_04">
+      <header class="card-header">
+        <span class="slug">m20_04</span>
+        <span class="handle">@つむぎ</span>
+        <span class="char-count">71字</span>
+      </header>
+      <div class="profile">- ハンドルネーム: つむぎ<br>- 年代/性別: 20代前半 男性<br>- 職業: 工場勤務（機械加工部門）<br>- 居住地ニュアンス: 関東の工業地帯近郊（栃木～埼玉あたり）<br>- 家族構成: 実家暮らし（両親と妹）<br>- ポケカ歴: 復帰勢（中学時代に少しやってて、23歳の今年秋に突然沼にハマった）</div>
+      <div class="post-text">夕方のカードショップ巡りから帰ってきた。新しいイラストレーター別のオリパ見つけたから週末に引いてみようかな。色使いえぐいやつばっか揃ってた 🎴</div>
+      <div class="card-actions">
+        <a class="post-button" href="https://twitter.com/intent/tweet?text=%E5%A4%95%E6%96%B9%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%82%B7%E3%83%A7%E3%83%83%E3%83%97%E5%B7%A1%E3%82%8A%E3%81%8B%E3%82%89%E5%B8%B0%E3%81%A3%E3%81%A6%E3%81%8D%E3%81%9F%E3%80%82%E6%96%B0%E3%81%97%E3%81%84%E3%82%A4%E3%83%A9%E3%82%B9%E3%83%88%E3%83%AC%E3%83%BC%E3%82%BF%E3%83%BC%E5%88%A5%E3%81%AE%E3%82%AA%E3%83%AA%E3%83%91%E8%A6%8B%E3%81%A4%E3%81%91%E3%81%9F%E3%81%8B%E3%82%89%E9%80%B1%E6%9C%AB%E3%81%AB%E5%BC%95%E3%81%84%E3%81%A6%E3%81%BF%E3%82%88%E3%81%86%E3%81%8B%E3%81%AA%E3%80%82%E8%89%B2%E4%BD%BF%E3%81%84%E3%81%88%E3%81%90%E3%81%84%E3%82%84%E3%81%A4%E3%81%B0%E3%81%A3%E3%81%8B%E6%8F%83%E3%81%A3%E3%81%A6%E3%81%9F%20%F0%9F%8E%B4" target="_blank" rel="noopener noreferrer">
+          🐦 X で投稿(現在ログイン中のアカ)
+        </a>
+        <a class="account-page-link" href="m20_04.html">
+          👤 m20_04 専用ページへ →
+        </a>
+      </div>
+    </article>
+    <article class="card" data-slug="m20_05">
+      <header class="card-header">
+        <span class="slug">m20_05</span>
+        <span class="handle">@ポケ相場師</span>
+        <span class="char-count">60字</span>
+      </header>
+      <div class="profile">- ハンドルネーム: ポケ相場師<br>- 年代/性別: 20代後半 男性<br>- 職業: サービス業（飲食店の店長）<br>- 居住地ニュアンス: 関東（都心近郊）<br>- 家族構成: 一人暮らし<br>- ポケカ歴: ベテラン（7年以上、相場推移まで追う）</div>
+      <div class="post-text">仕事終わってからシングル相場チェックするのが日課になってる。新弾の落ち着き具合見てると、推し環境のカード拾い時かもな 💭</div>
+      <div class="card-actions">
+        <a class="post-button" href="https://twitter.com/intent/tweet?text=%E4%BB%95%E4%BA%8B%E7%B5%82%E3%82%8F%E3%81%A3%E3%81%A6%E3%81%8B%E3%82%89%E3%82%B7%E3%83%B3%E3%82%B0%E3%83%AB%E7%9B%B8%E5%A0%B4%E3%83%81%E3%82%A7%E3%83%83%E3%82%AF%E3%81%99%E3%82%8B%E3%81%AE%E3%81%8C%E6%97%A5%E8%AA%B2%E3%81%AB%E3%81%AA%E3%81%A3%E3%81%A6%E3%82%8B%E3%80%82%E6%96%B0%E5%BC%BE%E3%81%AE%E8%90%BD%E3%81%A1%E7%9D%80%E3%81%8D%E5%85%B7%E5%90%88%E8%A6%8B%E3%81%A6%E3%82%8B%E3%81%A8%E3%80%81%E6%8E%A8%E3%81%97%E7%92%B0%E5%A2%83%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E6%8B%BE%E3%81%84%E6%99%82%E3%81%8B%E3%82%82%E3%81%AA%20%F0%9F%92%AD" target="_blank" rel="noopener noreferrer">
+          🐦 X で投稿(現在ログイン中のアカ)
+        </a>
+        <a class="account-page-link" href="m20_05.html">
+          👤 m20_05 専用ページへ →
+        </a>
+      </div>
+    </article>
+    <article class="card" data-slug="m30_01">
+      <header class="card-header">
+        <span class="slug">m30_01</span>
+        <span class="handle">@ナベキ</span>
+        <span class="char-count">67字</span>
+      </header>
+      <div class="profile">- ハンドルネーム: ナベキ<br>- 年代/性別: 30代前半 男性<br>- 職業: メーカー技術（機械設計）<br>- 居住地ニュアンス: 地方都市（東北圏）<br>- 家族構成: 既婚、子ども1人（小学生）<br>- ポケカ歴: 復帰勢（学生時代にやってた、2年前に息子がはまったのをきっかけに再開）</div>
+      <div class="post-text">仕事終わったら息子がカード整理してる状態で待ってくれてた。親目線だと地味だけど結構嬉しいんすよね。週末まとめて開封しようって約束した。</div>
+      <div class="card-actions">
+        <a class="post-button" href="https://twitter.com/intent/tweet?text=%E4%BB%95%E4%BA%8B%E7%B5%82%E3%82%8F%E3%81%A3%E3%81%9F%E3%82%89%E6%81%AF%E5%AD%90%E3%81%8C%E3%82%AB%E3%83%BC%E3%83%89%E6%95%B4%E7%90%86%E3%81%97%E3%81%A6%E3%82%8B%E7%8A%B6%E6%85%8B%E3%81%A7%E5%BE%85%E3%81%A3%E3%81%A6%E3%81%8F%E3%82%8C%E3%81%A6%E3%81%9F%E3%80%82%E8%A6%AA%E7%9B%AE%E7%B7%9A%E3%81%A0%E3%81%A8%E5%9C%B0%E5%91%B3%E3%81%A0%E3%81%91%E3%81%A9%E7%B5%90%E6%A7%8B%E5%AC%89%E3%81%97%E3%81%84%E3%82%93%E3%81%99%E3%82%88%E3%81%AD%E3%80%82%E9%80%B1%E6%9C%AB%E3%81%BE%E3%81%A8%E3%82%81%E3%81%A6%E9%96%8B%E5%B0%81%E3%81%97%E3%82%88%E3%81%86%E3%81%A3%E3%81%A6%E7%B4%84%E6%9D%9F%E3%81%97%E3%81%9F%E3%80%82" target="_blank" rel="noopener noreferrer">
+          🐦 X で投稿(現在ログイン中のアカ)
+        </a>
+        <a class="account-page-link" href="m30_01.html">
+          👤 m30_01 専用ページへ →
+        </a>
+      </div>
+    </article>
+    <article class="card" data-slug="m30_02">
+      <header class="card-header">
+        <span class="slug">m30_02</span>
+        <span class="handle">@ドクターセン</span>
+        <span class="char-count">53字</span>
+      </header>
+      <div class="profile">- ハンドルネーム: ドクターセン<br>- 年代/性別: 30代中盤 男性<br>- 職業: 医療職（診療放射線技師）<br>- 居住地ニュアンス: 関東（都市郊外）<br>- 家族構成: 既婚、子ども1人（保育園）<br>- ポケカ歴: 復帰勢（2020年コロナ禍に大学時代の友人に誘われ再開）</div>
+      <div class="post-text">土曜の大会で新しいデッキ試したいんだけど、環境読み間違えると目も当てられんな。データ取ってから調整するか。</div>
+      <div class="card-actions">
+        <a class="post-button" href="https://twitter.com/intent/tweet?text=%E5%9C%9F%E6%9B%9C%E3%81%AE%E5%A4%A7%E4%BC%9A%E3%81%A7%E6%96%B0%E3%81%97%E3%81%84%E3%83%87%E3%83%83%E3%82%AD%E8%A9%A6%E3%81%97%E3%81%9F%E3%81%84%E3%82%93%E3%81%A0%E3%81%91%E3%81%A9%E3%80%81%E7%92%B0%E5%A2%83%E8%AA%AD%E3%81%BF%E9%96%93%E9%81%95%E3%81%88%E3%82%8B%E3%81%A8%E7%9B%AE%E3%82%82%E5%BD%93%E3%81%A6%E3%82%89%E3%82%8C%E3%82%93%E3%81%AA%E3%80%82%E3%83%87%E3%83%BC%E3%82%BF%E5%8F%96%E3%81%A3%E3%81%A6%E3%81%8B%E3%82%89%E8%AA%BF%E6%95%B4%E3%81%99%E3%82%8B%E3%81%8B%E3%80%82" target="_blank" rel="noopener noreferrer">
+          🐦 X で投稿(現在ログイン中のアカ)
+        </a>
+        <a class="account-page-link" href="m30_02.html">
+          👤 m30_02 専用ページへ →
+        </a>
+      </div>
+    </article>
+    <article class="card" data-slug="m30_03">
+      <header class="card-header">
+        <span class="slug">m30_03</span>
+        <span class="handle">@陸 (りく)</span>
+        <span class="char-count">74字</span>
+      </header>
+      <div class="profile">- ハンドルネーム: 陸 (りく)<br>- 年代/性別: 30代後半 男性<br>- 職業: 営業課長<br>- 居住地ニュアンス: 関東近郊（埼玉～千葉辺り）<br>- 家族構成: 既婚・子ども1人（小学校低学年）<br>- ポケカ歴: ベテラン（初代から断続的、20年近い付き合い）</div>
+      <div class="post-text">営業回ってる時に立ち寄ったカード屋、新弾の相場チェック。高騰期は手が出ないな。3ヶ月待つと半値になってるパターン多いし、そこまで我慢するか。#ポケカ</div>
+      <div class="card-actions">
+        <a class="post-button" href="https://twitter.com/intent/tweet?text=%E5%96%B6%E6%A5%AD%E5%9B%9E%E3%81%A3%E3%81%A6%E3%82%8B%E6%99%82%E3%81%AB%E7%AB%8B%E3%81%A1%E5%AF%84%E3%81%A3%E3%81%9F%E3%82%AB%E3%83%BC%E3%83%89%E5%B1%8B%E3%80%81%E6%96%B0%E5%BC%BE%E3%81%AE%E7%9B%B8%E5%A0%B4%E3%83%81%E3%82%A7%E3%83%83%E3%82%AF%E3%80%82%E9%AB%98%E9%A8%B0%E6%9C%9F%E3%81%AF%E6%89%8B%E3%81%8C%E5%87%BA%E3%81%AA%E3%81%84%E3%81%AA%E3%80%823%E3%83%B6%E6%9C%88%E5%BE%85%E3%81%A4%E3%81%A8%E5%8D%8A%E5%80%A4%E3%81%AB%E3%81%AA%E3%81%A3%E3%81%A6%E3%82%8B%E3%83%91%E3%82%BF%E3%83%BC%E3%83%B3%E5%A4%9A%E3%81%84%E3%81%97%E3%80%81%E3%81%9D%E3%81%93%E3%81%BE%E3%81%A7%E6%88%91%E6%85%A2%E3%81%99%E3%82%8B%E3%81%8B%E3%80%82%23%E3%83%9D%E3%82%B1%E3%82%AB" target="_blank" rel="noopener noreferrer">
+          🐦 X で投稿(現在ログイン中のアカ)
+        </a>
+        <a class="account-page-link" href="m30_03.html">
+          👤 m30_03 専用ページへ →
+        </a>
+      </div>
+    </article>
+    <article class="card" data-slug="m30_04">
+      <header class="card-header">
+        <span class="slug">m30_04</span>
+        <span class="handle">@ねむねむ堂</span>
+        <span class="char-count">59字</span>
+      </header>
+      <div class="profile">- ハンドルネーム: ねむねむ堂<br>- 年代/性別: 30代前半 男性<br>- 職業: 公務員（地方自治体勤務）<br>- 居住地ニュアンス: 地方都市（中核市規模）<br>- 家族構成: 既婚、子ども1人（小学校低学年）<br>- ポケカ歴: 復帰勢（2020年秋のコロナ禍に子どもと一緒にハマり直した）</div>
+      <div class="post-text">仕事終わりの儀式、Cloveでオリパ眺める時間。結果より「どれ引こうかな」って迷ってる時間が一番落ち着くかもしれん。☕</div>
+      <div class="card-actions">
+        <a class="post-button" href="https://twitter.com/intent/tweet?text=%E4%BB%95%E4%BA%8B%E7%B5%82%E3%82%8F%E3%82%8A%E3%81%AE%E5%84%80%E5%BC%8F%E3%80%81Clove%E3%81%A7%E3%82%AA%E3%83%AA%E3%83%91%E7%9C%BA%E3%82%81%E3%82%8B%E6%99%82%E9%96%93%E3%80%82%E7%B5%90%E6%9E%9C%E3%82%88%E3%82%8A%E3%80%8C%E3%81%A9%E3%82%8C%E5%BC%95%E3%81%93%E3%81%86%E3%81%8B%E3%81%AA%E3%80%8D%E3%81%A3%E3%81%A6%E8%BF%B7%E3%81%A3%E3%81%A6%E3%82%8B%E6%99%82%E9%96%93%E3%81%8C%E4%B8%80%E7%95%AA%E8%90%BD%E3%81%A1%E7%9D%80%E3%81%8F%E3%81%8B%E3%82%82%E3%81%97%E3%82%8C%E3%82%93%E3%80%82%E2%98%95" target="_blank" rel="noopener noreferrer">
+          🐦 X で投稿(現在ログイン中のアカ)
+        </a>
+        <a class="account-page-link" href="m30_04.html">
+          👤 m30_04 専用ページへ →
+        </a>
+      </div>
+    </article>
+    <article class="card" data-slug="m30_05">
+      <header class="card-header">
+        <span class="slug">m30_05</span>
+        <span class="handle">@翔太@ポケカ沼</span>
+        <span class="char-count">76字</span>
+      </header>
+      <div class="profile">- ハンドルネーム: 翔太@ポケカ沼<br>- 年代/性別: 30代中盤 男性<br>- 職業: 営業課長候補<br>- 居住地ニュアンス: 関東圏（都心近郊、通勤1時間程度）<br>- 家族構成: 一人暮らし（仕事が不規則なため独身を貫く意向）<br>- ポケカ歴: コレクター志向（値段より好み重視）</div>
+      <div class="post-text">営業終わってから専門店寄ったら推し絵のイラストRが売ってた。値段見て一瞬躊躇ったけど、推し絵のためなら…ってな。やっぱり好きなやつは手に入れておきたいわ</div>
+      <div class="card-actions">
+        <a class="post-button" href="https://twitter.com/intent/tweet?text=%E5%96%B6%E6%A5%AD%E7%B5%82%E3%82%8F%E3%81%A3%E3%81%A6%E3%81%8B%E3%82%89%E5%B0%82%E9%96%80%E5%BA%97%E5%AF%84%E3%81%A3%E3%81%9F%E3%82%89%E6%8E%A8%E3%81%97%E7%B5%B5%E3%81%AE%E3%82%A4%E3%83%A9%E3%82%B9%E3%83%88R%E3%81%8C%E5%A3%B2%E3%81%A3%E3%81%A6%E3%81%9F%E3%80%82%E5%80%A4%E6%AE%B5%E8%A6%8B%E3%81%A6%E4%B8%80%E7%9E%AC%E8%BA%8A%E8%BA%87%E3%81%A3%E3%81%9F%E3%81%91%E3%81%A9%E3%80%81%E6%8E%A8%E3%81%97%E7%B5%B5%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AA%E3%82%89%E2%80%A6%E3%81%A3%E3%81%A6%E3%81%AA%E3%80%82%E3%82%84%E3%81%A3%E3%81%B1%E3%82%8A%E5%A5%BD%E3%81%8D%E3%81%AA%E3%82%84%E3%81%A4%E3%81%AF%E6%89%8B%E3%81%AB%E5%85%A5%E3%82%8C%E3%81%A6%E3%81%8A%E3%81%8D%E3%81%9F%E3%81%84%E3%82%8F" target="_blank" rel="noopener noreferrer">
+          🐦 X で投稿(現在ログイン中のアカ)
+        </a>
+        <a class="account-page-link" href="m30_05.html">
+          👤 m30_05 専用ページへ →
+        </a>
+      </div>
+    </article>
+    <article class="card" data-slug="m30_06">
+      <header class="card-header">
+        <span class="slug">m30_06</span>
+        <span class="handle">@singlecardman</span>
+        <span class="char-count">60字</span>
+      </header>
+      <div class="profile">- ハンドルネーム: @singlecardman<br>- 年代/性別: 30代後半 男性<br>- 職業: 管理職SE<br>- 居住地ニュアンス: 関東近郊（千葉・埼玉あたりの郊外）<br>- 家族構成: 妻と小学生の子ども1人。子どもがポケカに興味を持ったのをきっかけに一緒にやってる<br>- ポケカ歴: 復帰勢（小学4年生まで遊んでて、20年以上ぶりの再開）</div>
+      <div class="post-text">帰宅したら子どもがポケカ見てた。久しぶりに一緒に開けるか。最近シングル相場も落ち着いてきたし、狙ってたやつ買えるかもな。</div>
+      <div class="card-actions">
+        <a class="post-button" href="https://twitter.com/intent/tweet?text=%E5%B8%B0%E5%AE%85%E3%81%97%E3%81%9F%E3%82%89%E5%AD%90%E3%81%A9%E3%82%82%E3%81%8C%E3%83%9D%E3%82%B1%E3%82%AB%E8%A6%8B%E3%81%A6%E3%81%9F%E3%80%82%E4%B9%85%E3%81%97%E3%81%B6%E3%82%8A%E3%81%AB%E4%B8%80%E7%B7%92%E3%81%AB%E9%96%8B%E3%81%91%E3%82%8B%E3%81%8B%E3%80%82%E6%9C%80%E8%BF%91%E3%82%B7%E3%83%B3%E3%82%B0%E3%83%AB%E7%9B%B8%E5%A0%B4%E3%82%82%E8%90%BD%E3%81%A1%E7%9D%80%E3%81%84%E3%81%A6%E3%81%8D%E3%81%9F%E3%81%97%E3%80%81%E7%8B%99%E3%81%A3%E3%81%A6%E3%81%9F%E3%82%84%E3%81%A4%E8%B2%B7%E3%81%88%E3%82%8B%E3%81%8B%E3%82%82%E3%81%AA%E3%80%82" target="_blank" rel="noopener noreferrer">
+          🐦 X で投稿(現在ログイン中のアカ)
+        </a>
+        <a class="account-page-link" href="m30_06.html">
+          👤 m30_06 専用ページへ →
+        </a>
+      </div>
+    </article>
+    <article class="card" data-slug="m30_07">
+      <header class="card-header">
+        <span class="slug">m30_07</span>
+        <span class="handle">@ナイト勤務のカード沼</span>
+        <span class="char-count">57字</span>
+      </header>
+      <div class="profile">- ハンドルネーム: ナイト勤務のカード沼<br>- 年代/性別: 30代前半 男性<br>- 職業: SE<br>- 居住地ニュアンス: 関東（埼玉寄り）<br>- 家族構成: 一人暮らし（実家は地方）<br>- ポケカ歴: 復帰勢（2020年11月頃、リモート作業増加がきっかけでハマり直した）</div>
+      <div class="post-text">仕事終わったー。帰宅してからポケカの相場ちょっと見てみようかな。昨日ポチったやつ、いくらになってるか気になるんよ。</div>
+      <div class="card-actions">
+        <a class="post-button" href="https://twitter.com/intent/tweet?text=%E4%BB%95%E4%BA%8B%E7%B5%82%E3%82%8F%E3%81%A3%E3%81%9F%E3%83%BC%E3%80%82%E5%B8%B0%E5%AE%85%E3%81%97%E3%81%A6%E3%81%8B%E3%82%89%E3%83%9D%E3%82%B1%E3%82%AB%E3%81%AE%E7%9B%B8%E5%A0%B4%E3%81%A1%E3%82%87%E3%81%A3%E3%81%A8%E8%A6%8B%E3%81%A6%E3%81%BF%E3%82%88%E3%81%86%E3%81%8B%E3%81%AA%E3%80%82%E6%98%A8%E6%97%A5%E3%83%9D%E3%83%81%E3%81%A3%E3%81%9F%E3%82%84%E3%81%A4%E3%80%81%E3%81%84%E3%81%8F%E3%82%89%E3%81%AB%E3%81%AA%E3%81%A3%E3%81%A6%E3%82%8B%E3%81%8B%E6%B0%97%E3%81%AB%E3%81%AA%E3%82%8B%E3%82%93%E3%82%88%E3%80%82" target="_blank" rel="noopener noreferrer">
+          🐦 X で投稿(現在ログイン中のアカ)
+        </a>
+        <a class="account-page-link" href="m30_07.html">
+          👤 m30_07 専用ページへ →
+        </a>
+      </div>
+    </article>
+    <article class="card" data-slug="m30_08">
+      <header class="card-header">
+        <span class="slug">m30_08</span>
+        <span class="handle">@白夜勤の人</span>
+        <span class="char-count">68字</span>
+      </header>
+      <div class="profile">- ハンドルネーム: 夜勤明けのバトラー<br>- 年代/性別: 30代中盤 男性<br>- 職業: 医療職（看護師）<br>- 居住地ニュアンス: 関東圏の郊外<br>- 家族構成: 妻と子ども1人（小学生）<br>- ポケカ歴: 復帰勢(2020年コロナ禍のステイホーム中に子どもの影響でハマり直した)</div>
+      <div class="post-text">夜勤明けで脳みそ回ってないけど、子どもと対戦練習したら気づきが出た。疲れてる時こそ、相手の動きをシンプルに読めるのかもな。明日も仕事か…</div>
+      <div class="card-actions">
+        <a class="post-button" href="https://twitter.com/intent/tweet?text=%E5%A4%9C%E5%8B%A4%E6%98%8E%E3%81%91%E3%81%A7%E8%84%B3%E3%81%BF%E3%81%9D%E5%9B%9E%E3%81%A3%E3%81%A6%E3%81%AA%E3%81%84%E3%81%91%E3%81%A9%E3%80%81%E5%AD%90%E3%81%A9%E3%82%82%E3%81%A8%E5%AF%BE%E6%88%A6%E7%B7%B4%E7%BF%92%E3%81%97%E3%81%9F%E3%82%89%E6%B0%97%E3%81%A5%E3%81%8D%E3%81%8C%E5%87%BA%E3%81%9F%E3%80%82%E7%96%B2%E3%82%8C%E3%81%A6%E3%82%8B%E6%99%82%E3%81%93%E3%81%9D%E3%80%81%E7%9B%B8%E6%89%8B%E3%81%AE%E5%8B%95%E3%81%8D%E3%82%92%E3%82%B7%E3%83%B3%E3%83%97%E3%83%AB%E3%81%AB%E8%AA%AD%E3%82%81%E3%82%8B%E3%81%AE%E3%81%8B%E3%82%82%E3%81%AA%E3%80%82%E6%98%8E%E6%97%A5%E3%82%82%E4%BB%95%E4%BA%8B%E3%81%8B%E2%80%A6" target="_blank" rel="noopener noreferrer">
+          🐦 X で投稿(現在ログイン中のアカ)
+        </a>
+        <a class="account-page-link" href="m30_08.html">
+          👤 m30_08 専用ページへ →
+        </a>
+      </div>
+    </article>
+    <article class="card" data-slug="m30_09">
+      <header class="card-header">
+        <span class="slug">m30_09</span>
+        <span class="handle">@ナイト戦士</span>
+        <span class="char-count">64字</span>
+      </header>
+      <div class="profile">- ハンドルネーム: ナイト戦士<br>- 年代/性別: 30代後半 男性<br>- 職業: 個人事業主（Webデザイン・制作）<br>- 居住地ニュアンス: 関東圏（都心から少し離れた駅近）<br>- 家族構成: 既婚、子どもなし<br>- ポケカ歴: 新規（半年前から）</div>
+      <div class="post-text">夕方だし仕事も一段落。週末の大会動画でも見ながらデッキ構築考えるか。環境が変わるのはいいんだけど、調整が追いつくかが問題だな 💭</div>
+      <div class="card-actions">
+        <a class="post-button" href="https://twitter.com/intent/tweet?text=%E5%A4%95%E6%96%B9%E3%81%A0%E3%81%97%E4%BB%95%E4%BA%8B%E3%82%82%E4%B8%80%E6%AE%B5%E8%90%BD%E3%80%82%E9%80%B1%E6%9C%AB%E3%81%AE%E5%A4%A7%E4%BC%9A%E5%8B%95%E7%94%BB%E3%81%A7%E3%82%82%E8%A6%8B%E3%81%AA%E3%81%8C%E3%82%89%E3%83%87%E3%83%83%E3%82%AD%E6%A7%8B%E7%AF%89%E8%80%83%E3%81%88%E3%82%8B%E3%81%8B%E3%80%82%E7%92%B0%E5%A2%83%E3%81%8C%E5%A4%89%E3%82%8F%E3%82%8B%E3%81%AE%E3%81%AF%E3%81%84%E3%81%84%E3%82%93%E3%81%A0%E3%81%91%E3%81%A9%E3%80%81%E8%AA%BF%E6%95%B4%E3%81%8C%E8%BF%BD%E3%81%84%E3%81%A4%E3%81%8F%E3%81%8B%E3%81%8C%E5%95%8F%E9%A1%8C%E3%81%A0%E3%81%AA%20%F0%9F%92%AD" target="_blank" rel="noopener noreferrer">
+          🐦 X で投稿(現在ログイン中のアカ)
+        </a>
+        <a class="account-page-link" href="m30_09.html">
+          👤 m30_09 専用ページへ →
+        </a>
+      </div>
+    </article>
+    <article class="card" data-slug="m30_10">
+      <header class="card-header">
+        <span class="slug">m30_10</span>
+        <span class="handle">@lab_memo</span>
+        <span class="char-count">72字</span>
+      </header>
+      <div class="profile">- ハンドルネーム: @lab_memo<br>- 年代/性別: 30代前半 男性<br>- 職業: メーカー技術（製造業エンジニア）<br>- 居住地ニュアンス: 関東（郊外のベッドタウン）<br>- 家族構成: 既婚、子ども1人（小学低学年）<br>- ポケカ歴: 復帰勢（小学生時代にやってて、子どもが興味持ったから再開）</div>
+      <div class="post-text">夕方帰ってきて子どもがカード広げてた。最近自分から開けたいってなってくれるのが嬉しいな。親子で相場の話とかできるようになるまであと何年かかるか…</div>
+      <div class="card-actions">
+        <a class="post-button" href="https://twitter.com/intent/tweet?text=%E5%A4%95%E6%96%B9%E5%B8%B0%E3%81%A3%E3%81%A6%E3%81%8D%E3%81%A6%E5%AD%90%E3%81%A9%E3%82%82%E3%81%8C%E3%82%AB%E3%83%BC%E3%83%89%E5%BA%83%E3%81%92%E3%81%A6%E3%81%9F%E3%80%82%E6%9C%80%E8%BF%91%E8%87%AA%E5%88%86%E3%81%8B%E3%82%89%E9%96%8B%E3%81%91%E3%81%9F%E3%81%84%E3%81%A3%E3%81%A6%E3%81%AA%E3%81%A3%E3%81%A6%E3%81%8F%E3%82%8C%E3%82%8B%E3%81%AE%E3%81%8C%E5%AC%89%E3%81%97%E3%81%84%E3%81%AA%E3%80%82%E8%A6%AA%E5%AD%90%E3%81%A7%E7%9B%B8%E5%A0%B4%E3%81%AE%E8%A9%B1%E3%81%A8%E3%81%8B%E3%81%A7%E3%81%8D%E3%82%8B%E3%82%88%E3%81%86%E3%81%AB%E3%81%AA%E3%82%8B%E3%81%BE%E3%81%A7%E3%81%82%E3%81%A8%E4%BD%95%E5%B9%B4%E3%81%8B%E3%81%8B%E3%82%8B%E3%81%8B%E2%80%A6" target="_blank" rel="noopener noreferrer">
+          🐦 X で投稿(現在ログイン中のアカ)
+        </a>
+        <a class="account-page-link" href="m30_10.html">
+          👤 m30_10 専用ページへ →
+        </a>
+      </div>
+    </article>
+  </main>
+</body>
+</html>

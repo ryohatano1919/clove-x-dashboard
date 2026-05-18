@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="theme-color" content="#1d9bf0">
+  <title>f20_03 専用 — 2026-05-18</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+      background: #f5f7fa;
+      color: #1a1a2e;
+      padding: 16px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    header.page-header { max-width: 1200px; margin: 0 auto 16px; }
+    h1 { font-size: 1.4rem; margin-bottom: 4px; color: #1d9bf0; }
+    .meta { font-size: 0.85rem; color: #666; }
+    .card {
+      background: white;
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .card-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; }
+    .slug { font-weight: 700; color: #1d9bf0; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.95rem; }
+    .handle { font-size: 0.85rem; color: #555; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .char-count { font-size: 0.75rem; color: #888; }
+    .profile {
+      font-size: 0.78rem;
+      color: #666;
+      padding: 8px 10px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      border-left: 3px solid #1d9bf0;
+    }
+    .post-text {
+      background: #fff8e7;
+      padding: 14px;
+      border-radius: 10px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      font-size: 0.95rem;
+      border: 1px solid #f0e1b8;
+      min-height: 80px;
+    }
+    .post-button {
+      display: block;
+      text-align: center;
+      background: #1d9bf0;
+      color: white !important;
+      padding: 14px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 700;
+      transition: background 0.2s, transform 0.05s;
+      font-size: 0.95rem;
+    }
+    .post-button:hover { background: #1a8cd8; }
+    .post-button:active { background: #1681c4; transform: scale(0.98); }
+    .post-button.disabled {
+      background: #ccc !important;
+      pointer-events: none;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+    main.single { max-width: 600px; margin: 0 auto; }
+    .warning-banner {
+      background: linear-gradient(135deg, #fff3cd, #ffe8a8);
+      border: 2px solid #ffc107;
+      padding: 18px;
+      border-radius: 14px;
+      margin-bottom: 14px;
+      text-align: center;
+    }
+    .warning-banner h2 {
+      font-size: 1.1rem;
+      margin-bottom: 6px;
+      color: #663d00;
+    }
+    .warning-banner strong {
+      font-size: 1.3rem;
+      color: #1d9bf0;
+      display: block;
+      margin: 4px 0;
+    }
+    .warning-banner p { font-size: 0.85rem; color: #663d00; }
+    .login-check {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 14px;
+      background: #f0f8ff;
+      border: 2px solid #1d9bf0;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    .login-check input[type="checkbox"] {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+      margin-top: 1px;
+      cursor: pointer;
+    }
+    .login-check.checked {
+      background: #e8f5e9;
+      border-color: #4caf50;
+    }
+    .back-link {
+      display: inline-block;
+      margin-top: 16px;
+      color: #888;
+      font-size: 0.85rem;
+      text-decoration: none;
+    }
+    .back-link:hover { color: #1d9bf0; }
+  </style>
+</head>
+<body>
+  <main class="single">
+    <div class="warning-banner">
+      <h2>このページは ↓</h2>
+      <strong>@mitsuki_design</strong>
+      <p>専用です。他のアカウントでログイン中の場合は投稿しないでください。</p>
+    </div>
+
+    <article class="card" data-slug="f20_03">
+      <header class="card-header">
+        <span class="slug">f20_03</span>
+        <span class="char-count">66字</span>
+      </header>
+      <div class="profile">- ハンドルネーム: @mitsuki_design<br>- 年代/性別: 20代後半 女性<br>- 職業: Webディレクター<br>- 居住地ニュアンス: 関東（都内勤務、近郊在住）<br>- 家族構成: 一人暮らし<br>- ポケカ歴: 復帰勢（高校時代に遊んでいて、社会人になって2年前に再開）</div>
+      <div class="post-text">仕事中にイラレのポートフォリオ見てたら、ポケカのカード描いてる人発見。この方の絵、好きなんだよな。推しキャラのカード化されないかな…</div>
+
+      <label class="login-check" id="login-label">
+        <input type="checkbox" id="login-confirm">
+        <span>👆 @mitsuki_design でログイン中であることを確認しました</span>
+      </label>
+
+      <a class="post-button disabled" id="post-btn" href="https://twitter.com/intent/tweet?text=%E4%BB%95%E4%BA%8B%E4%B8%AD%E3%81%AB%E3%82%A4%E3%83%A9%E3%83%AC%E3%81%AE%E3%83%9D%E3%83%BC%E3%83%88%E3%83%95%E3%82%A9%E3%83%AA%E3%82%AA%E8%A6%8B%E3%81%A6%E3%81%9F%E3%82%89%E3%80%81%E3%83%9D%E3%82%B1%E3%82%AB%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E6%8F%8F%E3%81%84%E3%81%A6%E3%82%8B%E4%BA%BA%E7%99%BA%E8%A6%8B%E3%80%82%E3%81%93%E3%81%AE%E6%96%B9%E3%81%AE%E7%B5%B5%E3%80%81%E5%A5%BD%E3%81%8D%E3%81%AA%E3%82%93%E3%81%A0%E3%82%88%E3%81%AA%E3%80%82%E6%8E%A8%E3%81%97%E3%82%AD%E3%83%A3%E3%83%A9%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E5%8C%96%E3%81%95%E3%82%8C%E3%81%AA%E3%81%84%E3%81%8B%E3%81%AA%E2%80%A6" target="_blank" rel="noopener noreferrer">
+        🐦 X で投稿する
+      </a>
+    </article>
+
+    <a class="back-link" href="index.html">← 全体ダッシュボードに戻る</a>
+  </main>
+
+  <script>
+    const checkbox = document.getElementById('login-confirm');
+    const btn = document.getElementById('post-btn');
+    const label = document.getElementById('login-label');
+
+    checkbox.addEventListener('change', function() {
+      if (this.checked) {
+        btn.classList.remove('disabled');
+        label.classList.add('checked');
+      } else {
+        btn.classList.add('disabled');
+        label.classList.remove('checked');
+      }
+    });
+
+    btn.addEventListener('click', function(e) {
+      if (!checkbox.checked) {
+        e.preventDefault();
+        alert('まず "ログイン中であることを確認しました" にチェックを入れてください');
+        return false;
+      }
+    });
+  </script>
+</body>
+</html>
