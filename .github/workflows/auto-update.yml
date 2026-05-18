@@ -1,0 +1,45 @@
+name: Auto regenerate posts
+
+on:
+  schedule:
+    - cron: '0 0,4,8,12 * * *'
+  workflow_dispatch:
+
+jobs:
+  regenerate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r scripts/requirements.txt
+
+      - name: Regenerate today's posts and dashboard
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          TZ: Asia/Tokyo
+        run: |
+          python3 scripts/generate_daily_posts.py --overwrite
+          python3 scripts/render_dashboard.py
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/ accounts/ output/posts/ || true
+          if git diff --quiet --staged; then
+            echo "No changes to commit"
+          else
+            JST_HOUR=$(TZ=Asia/Tokyo date +'%Y-%m-%d %H:%M JST')
+            git commit -m "Auto: regenerate posts ($JST_HOUR)"
+            git push
+          fi
