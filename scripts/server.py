@@ -19,9 +19,13 @@ Usage:
 
 from __future__ import annotations
 
+import base64
+import csv
+import hmac
 import json
 import os
 import re
+import shutil
 import sys
 import urllib.parse
 from datetime import datetime, timezone, timedelta
@@ -32,6 +36,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 ACCOUNTS_DIR = REPO_ROOT / "accounts"
 OUTPUT_POSTS_DIR = REPO_ROOT / "output" / "posts"
 ASSETS_DIR = REPO_ROOT / "assets"
+SHEET_CSV_PATH = REPO_ROOT / "output" / "accounts_from_sheet.csv"
 
 JST = timezone(timedelta(hours=9))
 
@@ -69,11 +74,70 @@ def is_safe_slug(slug: str) -> bool:
     return bool(SAFE_SLUG.match(slug)) and (ACCOUNTS_DIR / slug).is_dir()
 
 
+def read_sheet_rows():
+    """Return (fieldnames, rows[]) from accounts_from_sheet.csv."""
+    if not SHEET_CSV_PATH.exists():
+        return ["slug", "handle_name"], []
+    with SHEET_CSV_PATH.open(encoding="utf-8", newline="") as f:
+        reader = csv.DictReader(f)
+        fieldnames = list(reader.fieldnames or ["slug", "handle_name"])
+        rows = list(reader)
+    return fieldnames, rows
+
+
+def write_sheet_rows(fieldnames, rows):
+    SHEET_CSV_PATH.parent.mkdir(parents=True, exist_ok=True)
+    with SHEET_CSV_PATH.open("w", encoding="utf-8", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(rows)
+
+
+def get_handle(slug: str) -> str:
+    _, rows = read_sheet_rows()
+    for r in rows:
+        if (r.get("slug") or "").strip() == slug:
+            return (r.get("handle_name") or "").strip()
+    return ""
+
+
 INJECT_SCRIPT = b'<script src="/assets/edit.js" defer></script>\n</body>'
+
+
+def _auth_enabled() -> bool:
+    return bool(os.environ.get("DASHBOARD_USER")) and bool(os.environ.get("DASHBOARD_PASS"))
 
 
 class Handler(BaseHTTPRequestHandler):
     server_version = "CloveDashboard/0.1"
+
+    # ---------------- auth ----------------
+    def _check_basic_auth(self) -> bool:
+        if not _auth_enabled():
+            return True
+        header = self.headers.get("Authorization", "")
+        if not header.startswith("Basic "):
+            return False
+        try:
+            decoded = base64.b64decode(header[6:].strip()).decode("utf-8", errors="replace")
+        except Exception:
+            return False
+        if ":" not in decoded:
+            return False
+        user, _, password = decoded.partition(":")
+        want_user = os.environ.get("DASHBOARD_USER", "")
+        want_pass = os.environ.get("DASHBOARD_PASS", "")
+        return hmac.compare_digest(user, want_user) and hmac.compare_digest(password, want_pass)
+
+    def _require_auth(self) -> bool:
+        if self._check_basic_auth():
+            return True
+        self.send_response(401)
+        self.send_header("WWW-Authenticate", 'Basic realm="Clove Dashboard"')
+        self.send_header("Content-Type", "text/plain; charset=utf-8")
+        self.send_header("Content-Length", "0")
+        self.end_headers()
+        return False
 
     # ---------------- helpers ----------------
     def _send_json(self, status: int, payload):
@@ -109,6 +173,8 @@ class Handler(BaseHTTPRequestHandler):
 
     # ---------------- routing ----------------
     def do_GET(self):
+        if not self._require_auth():
+            return
         parsed = urllib.parse.urlparse(self.path)
         path = parsed.path
 
@@ -121,17 +187,27 @@ class Handler(BaseHTTPRequestHandler):
         return self._serve_static_html_or_file(path)
 
     def do_PUT(self):
+        if not self._require_auth():
+            return
         parsed = urllib.parse.urlparse(self.path)
         if parsed.path.startswith("/api/persona/"):
             slug = parsed.path[len("/api/persona/"):]
             return self._put_persona(slug)
+        if parsed.path.startswith("/api/handle/"):
+            slug = parsed.path[len("/api/handle/"):]
+            return self._put_handle(slug)
         return self._send_json(404, {"error": "not found"})
 
     def do_POST(self):
+        if not self._require_auth():
+            return
         parsed = urllib.parse.urlparse(self.path)
         if parsed.path.startswith("/api/generate/"):
             slug = parsed.path[len("/api/generate/"):]
             return self._post_generate(slug, urllib.parse.parse_qs(parsed.query))
+        if parsed.path.startswith("/api/rename/"):
+            slug = parsed.path[len("/api/rename/"):]
+            return self._post_rename(slug)
         return self._send_json(404, {"error": "not found"})
 
     # ---------------- static ----------------
@@ -201,6 +277,12 @@ class Handler(BaseHTTPRequestHandler):
             date = (query.get("date") or [today_jst()])[0]
             return self._get_post(slug, date)
 
+        if path.startswith("/api/handle/"):
+            slug = path[len("/api/handle/"):]
+            if not is_safe_slug(slug):
+                return self._send_json(400, {"error": "invalid slug"})
+            return self._send_json(200, {"slug": slug, "handle": get_handle(slug)})
+
         return self._send_json(404, {"error": "not found"})
 
     def _get_persona(self, slug: str):
@@ -235,6 +317,79 @@ class Handler(BaseHTTPRequestHandler):
         if not p.exists():
             return self._send_json(404, {"error": "no post"})
         return self._send_json(200, {"slug": slug, "date": date, "text": p.read_text(encoding="utf-8")})
+
+    # ---------------- API: handle / rename ----------------
+    def _put_handle(self, slug: str):
+        if not is_safe_slug(slug):
+            return self._send_json(400, {"error": "invalid slug"})
+        data = self._read_json()
+        if data is None or "handle" not in data:
+            return self._send_json(400, {"error": "missing handle"})
+        handle = str(data["handle"]).strip()
+        if len(handle) > 200:
+            return self._send_json(400, {"error": "handle too long"})
+
+        fieldnames, rows = read_sheet_rows()
+        if "handle_name" not in fieldnames:
+            fieldnames.append("handle_name")
+        if "slug" not in fieldnames:
+            fieldnames.insert(0, "slug")
+        found = False
+        for r in rows:
+            if (r.get("slug") or "").strip() == slug:
+                r["handle_name"] = handle
+                found = True
+                break
+        if not found:
+            new_row = {k: "" for k in fieldnames}
+            new_row["slug"] = slug
+            new_row["handle_name"] = handle
+            rows.append(new_row)
+        write_sheet_rows(fieldnames, rows)
+        return self._send_json(200, {"slug": slug, "handle": handle, "saved": True})
+
+    def _post_rename(self, old_slug: str):
+        if not is_safe_slug(old_slug):
+            return self._send_json(400, {"error": "invalid slug"})
+        data = self._read_json()
+        if data is None or "new_slug" not in data:
+            return self._send_json(400, {"error": "missing new_slug"})
+        new_slug = str(data["new_slug"]).strip()
+        if not SAFE_SLUG.match(new_slug):
+            return self._send_json(400, {"error": "invalid new_slug (a-z, 0-9, _, - only)"})
+        if new_slug == old_slug:
+            return self._send_json(200, {"slug": new_slug, "renamed": False, "note": "no change"})
+        new_dir = ACCOUNTS_DIR / new_slug
+        if new_dir.exists():
+            return self._send_json(409, {"error": "new_slug already exists"})
+
+        # rename folder
+        old_dir = ACCOUNTS_DIR / old_slug
+        shutil.move(str(old_dir), str(new_dir))
+
+        # update CSV
+        fieldnames, rows = read_sheet_rows()
+        for r in rows:
+            if (r.get("slug") or "").strip() == old_slug:
+                r["slug"] = new_slug
+        write_sheet_rows(fieldnames, rows)
+
+        # update output/posts/*.json
+        if OUTPUT_POSTS_DIR.exists():
+            for jpath in OUTPUT_POSTS_DIR.glob("*.json"):
+                try:
+                    arr = json.loads(jpath.read_text(encoding="utf-8"))
+                except Exception:
+                    continue
+                changed = False
+                for entry in arr:
+                    if isinstance(entry, dict) and entry.get("slug") == old_slug:
+                        entry["slug"] = new_slug
+                        changed = True
+                if changed:
+                    jpath.write_text(json.dumps(arr, ensure_ascii=False, indent=2), encoding="utf-8")
+
+        return self._send_json(200, {"old_slug": old_slug, "new_slug": new_slug, "renamed": True})
 
     # ---------------- API: generate ----------------
     def _post_generate(self, slug: str, query: dict):
@@ -296,8 +451,10 @@ class Handler(BaseHTTPRequestHandler):
 
 def main():
     port = int(os.environ.get("PORT", "8765"))
-    server = ThreadingHTTPServer(("127.0.0.1", port), Handler)
-    print(f"Clove dashboard server on http://localhost:{port}/", flush=True)
+    host = os.environ.get("HOST", "127.0.0.1")
+    server = ThreadingHTTPServer((host, port), Handler)
+    auth_state = "ON" if _auth_enabled() else "OFF (set DASHBOARD_USER / DASHBOARD_PASS)"
+    print(f"Clove dashboard server on http://{host}:{port}/  | auth: {auth_state}", flush=True)
     try:
         server.serve_forever()
     except KeyboardInterrupt:

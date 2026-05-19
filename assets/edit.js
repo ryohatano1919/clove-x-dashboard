@@ -185,11 +185,74 @@
     }
   }
 
+  // -------- Inline edit pencil for slug / handle --------
+  function makePencil(title) {
+    const b = el("button", { class: "ce-pencil", title }, "✎");
+    b.style.cssText =
+      "border:none;background:transparent;cursor:pointer;color:#1d9bf0;font-size:0.85em;padding:0 4px;";
+    return b;
+  }
+
+  async function editHandle(card, slug, handleEl) {
+    const current = (handleEl.textContent || "").replace(/^@/, "").trim();
+    const next = window.prompt(`${slug} のハンドル名（@は不要）`, current);
+    if (next == null) return;
+    const cleaned = next.replace(/^@/, "").trim();
+    try {
+      await api("PUT", `/api/handle/${encodeURIComponent(slug)}`, { handle: cleaned });
+      handleEl.textContent = cleaned ? "@" + cleaned : "(handle未設定)";
+    } catch (e) {
+      alert("保存失敗: " + e.message);
+    }
+  }
+
+  async function editSlug(card, oldSlug, slugEl) {
+    const next = window.prompt(
+      `${oldSlug} を別のIDに変更します。\n半角英数・_ ・- のみ。\nフォルダ名・JSON参照も書き換わります。\n変更後は画面を再読み込みします。`,
+      oldSlug
+    );
+    if (next == null) return;
+    const newSlug = next.trim();
+    if (!/^[a-zA-Z0-9_-]+$/.test(newSlug)) {
+      alert("半角英数・_ ・- のみ使えます");
+      return;
+    }
+    if (newSlug === oldSlug) return;
+    try {
+      await api("POST", `/api/rename/${encodeURIComponent(oldSlug)}`, { new_slug: newSlug });
+      // page reload so all references (data-slug, links, summary JSON) re-render fresh
+      location.reload();
+    } catch (e) {
+      alert("リネーム失敗: " + e.message);
+    }
+  }
+
+  function enhanceCardHeader(card, slug) {
+    const header = card.querySelector(".card-header");
+    if (!header) return;
+    if (header.querySelector(".ce-pencil")) return;
+
+    const slugEl = header.querySelector(".slug");
+    if (slugEl) {
+      const pen = makePencil("slug を変更");
+      pen.addEventListener("click", () => editSlug(card, slugEl.textContent.trim(), slugEl));
+      slugEl.appendChild(pen);
+    }
+    const handleEl = header.querySelector(".handle");
+    if (handleEl) {
+      const pen = makePencil("ハンドル名を変更");
+      pen.addEventListener("click", () => editHandle(card, slug, handleEl));
+      handleEl.appendChild(pen);
+    }
+  }
+
   // -------- Wire each card --------
   function enhanceCard(card) {
     const slug = card.getAttribute("data-slug");
     if (!slug) return;
     if (card.querySelector(".ce-actions")) return;
+
+    enhanceCardHeader(card, slug);
 
     const status = el("span", { class: "ce-status" }, "");
     const editBtn = el("button", {

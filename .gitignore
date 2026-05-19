@@ -20,3 +20,6 @@ __pycache__/
 *.swp
 *.swo
 *~
+
+# Local binaries (cloudflared etc.)
+bin/
