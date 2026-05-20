@@ -451,7 +451,10 @@ class Handler(BaseHTTPRequestHandler):
 
 def main():
     port = int(os.environ.get("PORT", "8765"))
-    host = os.environ.get("HOST", "127.0.0.1")
+    # On Render (or any platform that sets RENDER=true), bind to all interfaces
+    # so the platform's HTTP router can reach us. Locally, stay on loopback.
+    default_host = "0.0.0.0" if os.environ.get("RENDER") else "127.0.0.1"
+    host = os.environ.get("HOST", default_host)
     server = ThreadingHTTPServer((host, port), Handler)
     auth_state = "ON" if _auth_enabled() else "OFF (set DASHBOARD_USER / DASHBOARD_PASS)"
     print(f"Clove dashboard server on http://{host}:{port}/  | auth: {auth_state}", flush=True)
