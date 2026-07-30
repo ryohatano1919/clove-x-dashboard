@@ -57,13 +57,32 @@ def get_recent_posts(slug: str, n: int = RECENT_POST_WINDOW) -> str:
     return "\n\n---\n\n".join(texts) if texts else "(まだ投稿履歴なし)"
 
 
+# 投稿タイプ配分(担当の運用設計に基づく)
+#   nichijo: 等身大の日常つぶやき(従来型) / ninchi: 認知(バズ構造流用・インプ狙い)
+#   shinrai: 信頼(当選報告・CV狙い)。ドラフト扱いで自動投稿から除外(実物差し替え前提)
+POST_TYPE_WEIGHTS = [("nichijo", 5), ("ninchi", 3), ("shinrai", 2)]
+
+WIN_REPORT_RE = re.compile(r"当た|当選|引け|抜き|ワンパン|爆アド|神引")
+
+
+def pick_post_type() -> str:
+    types, weights = zip(*POST_TYPE_WEIGHTS)
+    return random.choices(types, weights=weights, k=1)[0]
+
+
+def load_benchmark_data() -> dict | None:
+    if not BENCHMARK_PATH.exists():
+        return None
+    try:
+        return json.loads(BENCHMARK_PATH.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return None
+
+
 def get_benchmark_sample(n_bench: int = 8, n_buzz: int = 4) -> str:
     """ベンチマーク/バズ投稿からランダムサンプルを整形して返す(未取得なら空文字)"""
-    if not BENCHMARK_PATH.exists():
-        return ""
-    try:
-        data = json.loads(BENCHMARK_PATH.read_text(encoding="utf-8"))
-    except (json.JSONDecodeError, OSError):
+    data = load_benchmark_data()
+    if not data:
         return ""
     bench = [p for p in data.get("benchmark", []) if not p.get("is_reply")]
     buzz = [p for p in data.get("buzz", []) if not p.get("is_reply")]
@@ -79,7 +98,49 @@ def get_benchmark_sample(n_bench: int = 8, n_buzz: int = 4) -> str:
     return "\n".join(lines)
 
 
-def build_post_prompt(persona: str, rules: str, examples: str, recent: str, now_jst: datetime, benchmark: str = "(サンプルなし)") -> str:
+def build_type_block(post_type: str) -> str:
+    """投稿タイプ別の指示とサンプルを組み立てる"""
+    data = load_benchmark_data() or {}
+
+    if post_type == "ninchi":
+        buzz = [p for p in data.get("buzz", []) if not p.get("is_reply")]
+        samples = random.sample(buzz[:40], min(6, len(buzz[:40]))) if buzz else []
+        sample_text = "\n".join(f"- ❤️{p['likes']} : {p['text'][:140]}" for p in samples) or "(サンプルなし)"
+        return f"""# 今日の投稿タイプ: 認知投稿(インプ狙い・母数づくり)
+
+0から創作しない。下のバズ投稿から1つ選び、**その投稿の構造・フォーマットをそのまま流用**して中身だけ自分(ペルソナ)の体験に差し替える。
+(【◯◯あるある】型 / 三者対比型 / 「この時◯歳、、、笑」型 など)
+
+## 絶対ルール
+- **オリパ・Clove・ガチャサイト名は一切出さない**(共感バズが目的。宣伝臭ゼロ)
+- オチや説明の尻尾を付けない。句点でフラットに落とす
+- 絵文字は激減(0〜1個)。説明した瞬間AIっぽくなる
+- ギャンブル・収集癖・金欠など、ペルソナの属性と地続きの共感ネタにする
+
+## バズ投稿サンプル(構造の流用元)
+{sample_text}"""
+
+    if post_type == "shinrai":
+        bench = [p for p in data.get("benchmark", []) if not p.get("is_reply") and WIN_REPORT_RE.search(p["text"])]
+        samples = random.sample(bench, min(6, len(bench))) if bench else []
+        sample_text = "\n".join(f"- @{p['user']}: {p['text'][:140]}" for p in samples) or "(サンプルなし)"
+        return f"""# 今日の投稿タイプ: 信頼投稿(当選報告・フォロー→課金CV狙い)
+
+下の実在の当選報告の**構造を真似て**、Cloveでの当選報告を書く。
+
+## 絶対ルール
+- **@CloveOripa と #クローブオリパ当選報告 を必ず入れる**
+- カード名・金額は現実的な例でよい(投稿前に実際に引いた内容へ差し替える前提のドラフト)
+- 画面収録 or 当選品の画像を添付する前提の文にする(「画像見て」的な説明文は不要、実投稿がそうであるように)
+- はしゃぎ方はペルソナの温度感に従う(全員が絶叫しない。低温の当選報告も実在する)
+
+## 当選報告サンプル(構造の流用元)
+{sample_text}"""
+
+    return ""
+
+
+def build_post_prompt(persona: str, rules: str, examples: str, recent: str, now_jst: datetime, benchmark: str = "(サンプルなし)", type_block: str = "") -> str:
     hour = now_jst.hour
     if 8 <= hour < 11:
         timeband = "朝"
@@ -105,6 +166,8 @@ def build_post_prompt(persona: str, rules: str, examples: str, recent: str, now_
 
 # お手本(このクオリティ・トーンを目指す)
 {examples}
+
+{type_block}
 
 # リアル投稿サンプル(実在ユーザーの生投稿)
 文体の崩し方・温度感・話題の解像度の基準として参考にする。
@@ -151,10 +214,10 @@ def build_post_prompt(persona: str, rules: str, examples: str, recent: str, now_
 - 直近の投稿と話題・表現・出だしの言葉が被らないこと
 - ハッシュタグは0〜2個まで、絵文字は0〜2個まで
 - ペルソナの口調・関心領域・職業感(性別・年代)には沿うこと
-- Clove名指しは10投稿のうち3〜4回程度の頻度なので、今日言及するかはペルソナと話題に応じて判断"""
+- 「今日の投稿タイプ」の指定がある場合はその絶対ルールが最優先。指定がなければClove名指しは10投稿のうち3〜4回程度の頻度なので、今日言及するかはペルソナと話題に応じて判断"""
 
 
-def generate_post_for_account(client, slug: str, now_jst: datetime):
+def generate_post_for_account(client, slug: str, now_jst: datetime, post_type: str = "nichijo"):
     persona_path = ACCOUNTS_DIR / slug / "persona.md"
     if not persona_path.exists():
         return None, f"persona missing: {persona_path}"
@@ -165,7 +228,8 @@ def generate_post_for_account(client, slug: str, now_jst: datetime):
     recent = get_recent_posts(slug)
 
     benchmark = get_benchmark_sample() or "(サンプルなし)"
-    prompt = build_post_prompt(persona, rules, examples, recent, now_jst, benchmark)
+    type_block = build_type_block(post_type)
+    prompt = build_post_prompt(persona, rules, examples, recent, now_jst, benchmark, type_block)
     last_err = None
     for attempt in range(4):
         try:
@@ -202,6 +266,8 @@ def main():
     parser.add_argument("--date", help="Date for posts (YYYY-MM-DD), default today JST", default=None)
     parser.add_argument("--only", help="Generate only for these slugs (comma-separated)", default=None)
     parser.add_argument("--overwrite", action="store_true", help="Overwrite existing posts for this date")
+    parser.add_argument("--type", choices=["nichijo", "ninchi", "shinrai"], default=None,
+                        help="Force post type for all accounts (default: weighted random per account)")
     args = parser.parse_args()
 
     if args.date:
@@ -236,9 +302,15 @@ def main():
             results.append({"slug": slug, "date": date_str, "text": content, "status": "existing"})
             continue
 
-        print(f"[GEN] {slug} {date_str}...", flush=True)
+        # 公式アカは第三者を装えないため常に日常型(認知=ブランド隠し/信頼=当選報告 は不可)
+        if slug == "clove_official":
+            post_type = "nichijo"
+        else:
+            post_type = args.type or pick_post_type()
+
+        print(f"[GEN] {slug} {date_str} type={post_type}...", flush=True)
         try:
-            text, err = generate_post_for_account(client, slug, now_jst)
+            text, err = generate_post_for_account(client, slug, now_jst, post_type)
         except Exception as e:
             text = None
             err = str(e)
@@ -250,7 +322,12 @@ def main():
         post_path.parent.mkdir(parents=True, exist_ok=True)
         post_path.write_text(text, encoding="utf-8")
         print(f"  -> {text}")
-        results.append({"slug": slug, "date": date_str, "text": text, "status": "new"})
+        results.append({
+            "slug": slug, "date": date_str, "text": text, "status": "new",
+            "type": post_type,
+            # 信頼型はカード名・金額を実物に差し替えてから人が投稿する
+            "draft": post_type == "shinrai",
+        })
 
     # サマリJSON出力:
     #   --only 指定時は、既存のサマリJSONとマージして全アカ分を保持
