@@ -131,21 +131,22 @@
       <p>専用です。他のアカウントでログイン中の場合は投稿しないでください。</p>
     </div>
 
+    <div class="profile">- ハンドルネーム: Clove（中の人）<br>- 立場: Clove運営スタッフ<br>- 年代/性別: 20代後半（性別は前面に出さない、中性的な口調）<br>- 業務: カスタマー対応とSNS運用を兼任。新オリパの企画会議にも同席する<br>- ポケカ歴: 業務で触れて本気になった勢。子どもの頃に少し遊んでいた程度から、入社後にガチで覚え直した</div>
+
+    <label class="login-check" id="login-label">
+      <input type="checkbox" id="login-confirm">
+      <span>👆 (handle未設定) でログイン中であることを確認しました</span>
+    </label>
+
     <article class="card" data-slug="clove_official">
       <header class="card-header">
         <span class="slug">clove_official</span>
-        <span class="char-count">39字</span>
+        <span class="type-badge" style="background:#1d9bf0;color:#fff;border-radius:10px;padding:2px 10px;font-size:12px;">日常</span>
+        <span class="char-count">42字</span>
       </header>
-      <div class="profile">- ハンドルネーム: Clove（中の人）<br>- 立場: Clove運営スタッフ<br>- 年代/性別: 20代後半（性別は前面に出さない、中性的な口調）<br>- 業務: カスタマー対応とSNS運用を兼任。新オリパの企画会議にも同席する<br>- ポケカ歴: 業務で触れて本気になった勢。子どもの頃に少し遊んでいた程度から、入社後にガチで覚え直した</div>
-      <div class="post-text">検品してたら同じレアリティで違うイラストのやつ並んでて、地味に見比べるの楽しい</div>
-
-      <label class="login-check" id="login-label">
-        <input type="checkbox" id="login-confirm">
-        <span>👆 (handle未設定) でログイン中であることを確認しました</span>
-      </label>
-
-      <a class="post-button disabled" id="post-btn" href="https://twitter.com/intent/tweet?text=%E6%A4%9C%E5%93%81%E3%81%97%E3%81%A6%E3%81%9F%E3%82%89%E5%90%8C%E3%81%98%E3%83%AC%E3%82%A2%E3%83%AA%E3%83%86%E3%82%A3%E3%81%A7%E9%81%95%E3%81%86%E3%82%A4%E3%83%A9%E3%82%B9%E3%83%88%E3%81%AE%E3%82%84%E3%81%A4%E4%B8%A6%E3%82%93%E3%81%A7%E3%81%A6%E3%80%81%E5%9C%B0%E5%91%B3%E3%81%AB%E8%A6%8B%E6%AF%94%E3%81%B9%E3%82%8B%E3%81%AE%E6%A5%BD%E3%81%97%E3%81%84" target="_blank" rel="noopener noreferrer">
-        🐦 X で投稿する
+      <div class="post-text">夏の新弾、封入率どこまで攻めるか社内でまだ揉めてる。攻めすぎても引きにくいだけだしな</div>
+      <a class="post-button disabled post-btn" href="https://twitter.com/intent/tweet?text=%E5%A4%8F%E3%81%AE%E6%96%B0%E5%BC%BE%E3%80%81%E5%B0%81%E5%85%A5%E7%8E%87%E3%81%A9%E3%81%93%E3%81%BE%E3%81%A7%E6%94%BB%E3%82%81%E3%82%8B%E3%81%8B%E7%A4%BE%E5%86%85%E3%81%A7%E3%81%BE%E3%81%A0%E6%8F%89%E3%82%81%E3%81%A6%E3%82%8B%E3%80%82%E6%94%BB%E3%82%81%E3%81%99%E3%81%8E%E3%81%A6%E3%82%82%E5%BC%95%E3%81%8D%E3%81%AB%E3%81%8F%E3%81%84%E3%81%A0%E3%81%91%E3%81%A0%E3%81%97%E3%81%AA" target="_blank" rel="noopener noreferrer">
+        🐦 この案で投稿する
       </a>
     </article>
 
@@ -154,25 +155,24 @@
 
   <script>
     const checkbox = document.getElementById('login-confirm');
-    const btn = document.getElementById('post-btn');
+    const btns = document.querySelectorAll('.post-btn');
     const label = document.getElementById('login-label');
 
     checkbox.addEventListener('change', function() {
-      if (this.checked) {
-        btn.classList.remove('disabled');
-        label.classList.add('checked');
-      } else {
-        btn.classList.add('disabled');
-        label.classList.remove('checked');
-      }
+      btns.forEach(function(btn) {
+        btn.classList.toggle('disabled', !checkbox.checked);
+      });
+      label.classList.toggle('checked', checkbox.checked);
     });
 
-    btn.addEventListener('click', function(e) {
-      if (!checkbox.checked) {
-        e.preventDefault();
-        alert('まず "ログイン中であることを確認しました" にチェックを入れてください');
-        return false;
-      }
+    btns.forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        if (!checkbox.checked) {
+          e.preventDefault();
+          alert('まず "ログイン中であることを確認しました" にチェックを入れてください');
+          return false;
+        }
+      });
     });
   </script>
 </body>
