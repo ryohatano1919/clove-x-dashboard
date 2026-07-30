@@ -28,6 +28,7 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           TZ: Asia/Tokyo
         run: |
+          python3 scripts/fetch_benchmark_posts.py || echo "benchmark fetch failed, continuing without samples"
           python3 scripts/generate_daily_posts.py --overwrite
           python3 scripts/render_dashboard.py
 
@@ -35,7 +36,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/ accounts/ output/posts/ || true
+          git add docs/ accounts/ output/posts/ reference/ || true
           if git diff --quiet --staged; then
             echo "No changes to commit"
           else

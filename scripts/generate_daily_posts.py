@@ -20,6 +20,7 @@ from __future__ import annotations
 import argparse
 import json
 import random
+import re
 import sys
 import time
 from datetime import datetime, timezone, timedelta
@@ -32,9 +33,10 @@ ACCOUNTS_DIR = REPO_ROOT / "accounts"
 REFERENCE_DIR = REPO_ROOT / "reference"
 RULES_PATH = REFERENCE_DIR / "x-post-rules.md"
 EXAMPLES_PATH = REFERENCE_DIR / "x-post-examples.md"
+BENCHMARK_PATH = REFERENCE_DIR / "benchmark_posts.json"
 OUTPUT_DIR = REPO_ROOT / "output" / "posts"
 
-CLAUDE_MODEL = "claude-haiku-4-5"
+CLAUDE_MODEL = "claude-sonnet-5"
 JST = timezone(timedelta(hours=9))
 RECENT_POST_WINDOW = 14
 
@@ -55,7 +57,29 @@ def get_recent_posts(slug: str, n: int = RECENT_POST_WINDOW) -> str:
     return "\n\n---\n\n".join(texts) if texts else "(まだ投稿履歴なし)"
 
 
-def build_post_prompt(persona: str, rules: str, examples: str, recent: str, now_jst: datetime) -> str:
+def get_benchmark_sample(n_bench: int = 8, n_buzz: int = 4) -> str:
+    """ベンチマーク/バズ投稿からランダムサンプルを整形して返す(未取得なら空文字)"""
+    if not BENCHMARK_PATH.exists():
+        return ""
+    try:
+        data = json.loads(BENCHMARK_PATH.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return ""
+    bench = [p for p in data.get("benchmark", []) if not p.get("is_reply")]
+    buzz = [p for p in data.get("buzz", []) if not p.get("is_reply")]
+    lines = []
+    if bench:
+        lines.append("## ベンチマークアカウントの直近投稿(等身大のトーン)")
+        for p in random.sample(bench, min(n_bench, len(bench))):
+            lines.append(f"- @{p['user']}: {p['text'][:140]}")
+    if buzz:
+        lines.append("\n## 同属性アカウントのバズ投稿(伸びる話題・切り口)")
+        for p in random.sample(buzz[:40], min(n_buzz, len(buzz[:40]))):
+            lines.append(f"- ❤️{p['likes']} @{p['user']}: {p['text'][:140]}")
+    return "\n".join(lines)
+
+
+def build_post_prompt(persona: str, rules: str, examples: str, recent: str, now_jst: datetime, benchmark: str = "(サンプルなし)") -> str:
     hour = now_jst.hour
     if 8 <= hour < 11:
         timeband = "朝"
@@ -82,22 +106,52 @@ def build_post_prompt(persona: str, rules: str, examples: str, recent: str, now_
 # お手本(このクオリティ・トーンを目指す)
 {examples}
 
+# リアル投稿サンプル(実在ユーザーの生投稿)
+文体の崩し方・温度感・話題の解像度の基準として参考にする。
+**文言のコピペ・言い換えでの流用は絶対禁止。** 雰囲気とリアリティの水準だけ吸収すること。
+ペルソナと属性が違う投稿(VTuberファン・ソシャゲ勢など)の話題は真似しない。
+{benchmark}
+
 # 直近の投稿履歴(被らないように)
 {recent}
 
 ---
 
-# 出力指示
+# AI感の正体(絶対に避ける構造)
 
-- 投稿本文のみを **1つだけ** 出力
-- 前置き・コメント・解説・引用符は一切不要
-- 文字数は50〜140字
+以下は「AIが書いたと一発でバレる」パターン。1つでも該当したら書き直すこと。
+
+- **状況実況**: 「仕事終わり。」「昼休み。」など今の時間帯の報告から始める
+- **予定の宣言**: 「〜しなきゃ」「〜してみるか」「明日は〜する予定」で締める
+- **1投稿に要素を詰め込む**: 時間帯+予定+感想+口癖、のフルコース。人間は1投稿1トピック
+- **口癖の接ぎ木**: ペルソナの口癖・特徴表現を無理に埋め込む。口癖は10投稿に1回出れば十分で、今日は使わなくていい
+- **整いすぎた文**: 全文が主語述語の揃った完結文。実際のXは体言止め・言いさし・倒置・一文だけの投稿が多い
+- **起承転結**: きれいにオチをつけようとする。オチのない「ただのぼやき」でいい
+
+# 書き方のコツ
+
+- 今日その人が「思わず呟いた一言」を書く。日記ではなくつぶやき
+- 具体的なモノ(カード名・値段・出来事)が1つあると実在感が出る
+- 50字前後の短い投稿を恐れない(140字近くまで埋める必要はない)
+- 感情は説明せず、言い方に滲ませる
+
+# 出力手順
+
+まず候補を3つ書き、それぞれ自分で「AI感がないか」を上のリストで検査する。
+最後に、最も人間っぽい1つを選んで以下の形式で出力:
+
+<候補>
+(候補3つと自己検査をここに)
+</候補>
+<投稿>
+(選んだ投稿本文のみ)
+</投稿>
+
+- 文字数は40〜140字
 - 直近の投稿と話題・表現・出だしの言葉が被らないこと
 - ハッシュタグは0〜2個まで、絵文字は0〜2個まで
-- 必ずペルソナの口調・関心領域・職業感に沿うこと(性別・年代も)
-- Clove名指しは10投稿のうち3〜4回程度の頻度なので、今日言及するかはペルソナと話題に応じて判断
-
-それでは投稿を1つだけ出力してください:"""
+- ペルソナの口調・関心領域・職業感(性別・年代)には沿うこと
+- Clove名指しは10投稿のうち3〜4回程度の頻度なので、今日言及するかはペルソナと話題に応じて判断"""
 
 
 def generate_post_for_account(client, slug: str, now_jst: datetime):
@@ -110,18 +164,25 @@ def generate_post_for_account(client, slug: str, now_jst: datetime):
     examples = read_text(EXAMPLES_PATH)
     recent = get_recent_posts(slug)
 
-    prompt = build_post_prompt(persona, rules, examples, recent, now_jst)
+    benchmark = get_benchmark_sample() or "(サンプルなし)"
+    prompt = build_post_prompt(persona, rules, examples, recent, now_jst, benchmark)
     last_err = None
     for attempt in range(4):
         try:
             response = client.messages.create(
                 model=CLAUDE_MODEL,
-                max_tokens=400,
+                max_tokens=1500,
+                temperature=1.0,
                 messages=[{"role": "user", "content": prompt}],
             )
-            text = response.content[0].text.strip()
-            # メタな前置き(「投稿します」「生成します」など)が「---」区切りで入った場合、最後の本文だけ採用
-            if "\n---\n" in text:
+            text = "".join(
+                b.text for b in response.content if getattr(b, "type", "") == "text"
+            ).strip()
+            # <投稿>タグ内の本文を採用(3案生成→自選方式)
+            m = re.search(r"<投稿>\s*(.*?)\s*</投稿>", text, re.DOTALL)
+            if m:
+                text = m.group(1).strip()
+            elif "\n---\n" in text:
                 text = text.split("\n---\n")[-1].strip()
             # 引用符等の除去
             text = text.strip('"').strip("「").strip("」").strip()

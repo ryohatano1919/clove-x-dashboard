@@ -24,6 +24,7 @@ import anthropic
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 ACCOUNTS_DIR = REPO_ROOT / "accounts"
+INSIGHTS_PATH = REPO_ROOT / "reference" / "benchmark-insights.md"
 
 CLAUDE_MODEL = "claude-haiku-4-5"
 
@@ -90,6 +91,13 @@ INTERESTS = [
 
 
 def build_persona_prompt(slug, age_band, gender, occupation, tcg_history, interest, notes=""):
+    insights_block = ""
+    if INSIGHTS_PATH.exists():
+        insights_block = (
+            "\n# 実在ユーザーの投稿傾向(ベンチマーク分析。投稿の癖セクションに反映すること)\n"
+            + INSIGHTS_PATH.read_text(encoding="utf-8")
+            + "\n"
+        )
     notes_block = ""
     if notes and notes.strip():
         notes_block = f"\n# 追加で必ず守る制約 (Hero さん指示)\n{notes.strip()}\n"
@@ -103,7 +111,7 @@ def build_persona_prompt(slug, age_band, gender, occupation, tcg_history, intere
 - 性別: {gender}
 - 職業: {occupation}
 - ポケカ歴: {tcg_history}
-- 関心領域: {interest}{notes_block}
+- 関心領域: {interest}{notes_block}{insights_block}
 
 # 共通方針
 - Cloveオリパ(ポケモンカードのオンラインオリパサイト)を使っている匿名ユーザー
