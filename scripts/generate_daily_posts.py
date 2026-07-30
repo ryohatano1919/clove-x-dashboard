@@ -58,17 +58,14 @@ def get_recent_posts(slug: str, n: int = RECENT_POST_WINDOW) -> str:
     return "\n\n---\n\n".join(texts) if texts else "(まだ投稿履歴なし)"
 
 
-# 投稿タイプ配分(担当の運用設計に基づく)
-#   nichijo: 等身大の日常つぶやき(従来型) / ninchi: 認知(バズ構造流用・インプ狙い)
-#   shinrai: 信頼(当選報告・CV狙い)。ドラフト扱いで自動投稿から除外(実物差し替え前提)
-POST_TYPE_WEIGHTS = [("nichijo", 5), ("ninchi", 3), ("shinrai", 2)]
+# 投稿タイプ(担当の運用設計に基づく)。毎日3タイプ全て候補として生成し、
+# どれを使うか・投稿するかは人が選ぶ(自動投稿はしない)
+#   nichijo: 等身大の日常つぶやき / ninchi: 認知(バズ構造流用・インプ狙い)
+#   shinrai: 信頼(当選報告・CV狙い、カード名等は実物に差し替える前提)
+POST_TYPES = ["nichijo", "ninchi", "shinrai"]
+TYPE_LABELS = {"nichijo": "日常", "ninchi": "認知", "shinrai": "信頼"}
 
 WIN_REPORT_RE = re.compile(r"当た|当選|引け|抜き|ワンパン|爆アド|神引")
-
-
-def pick_post_type() -> str:
-    types, weights = zip(*POST_TYPE_WEIGHTS)
-    return random.choices(types, weights=weights, k=1)[0]
 
 
 def load_benchmark_data() -> dict | None:
@@ -299,39 +296,42 @@ def main():
         if target_slugs and slug not in target_slugs:
             continue
 
-        post_path = ACCOUNTS_DIR / slug / "posts" / f"{date_str}.md"
-        if post_path.exists() and not args.overwrite:
-            content = post_path.read_text(encoding="utf-8").strip()
-            print(f"[SKIP] {slug} {date_str} (existing): {content[:50]}...")
-            results.append({"slug": slug, "date": date_str, "text": content, "status": "existing"})
-            continue
-
-        # 公式アカは第三者を装えないため常に日常型(認知=ブランド隠し/信頼=当選報告 は不可)
+        # 公式アカは第三者を装えないため日常型のみ(認知=ブランド隠し/信頼=当選報告 は不可)
         if slug == "clove_official":
-            post_type = "nichijo"
+            types = ["nichijo"]
+        elif args.type:
+            types = [args.type]
         else:
-            post_type = args.type or pick_post_type()
+            types = POST_TYPES
 
-        print(f"[GEN] {slug} {date_str} type={post_type}...", flush=True)
-        try:
-            text, err = generate_post_for_account(client, slug, now_jst, post_type)
-        except Exception as e:
-            text = None
-            err = str(e)
+        for post_type in types:
+            post_path = ACCOUNTS_DIR / slug / "posts" / f"{date_str}_{post_type}.md"
+            if post_path.exists() and not args.overwrite:
+                content = post_path.read_text(encoding="utf-8").strip()
+                print(f"[SKIP] {slug} {date_str} {post_type} (existing): {content[:40]}...")
+                results.append({"slug": slug, "date": date_str, "text": content,
+                                "status": "existing", "type": post_type, "draft": True})
+                continue
 
-        if err:
-            print(f"[ERROR] {slug}: {err}", file=sys.stderr)
-            continue
+            print(f"[GEN] {slug} {date_str} type={post_type}...", flush=True)
+            try:
+                text, err = generate_post_for_account(client, slug, now_jst, post_type)
+            except Exception as e:
+                text = None
+                err = str(e)
 
-        post_path.parent.mkdir(parents=True, exist_ok=True)
-        post_path.write_text(text, encoding="utf-8")
-        print(f"  -> {text}")
-        results.append({
-            "slug": slug, "date": date_str, "text": text, "status": "new",
-            "type": post_type,
-            # 信頼型はカード名・金額を実物に差し替えてから人が投稿する
-            "draft": post_type == "shinrai",
-        })
+            if err:
+                print(f"[ERROR] {slug} {post_type}: {err}", file=sys.stderr)
+                continue
+
+            post_path.parent.mkdir(parents=True, exist_ok=True)
+            post_path.write_text(text, encoding="utf-8")
+            print(f"  -> {text}")
+            # 全候補draft扱い: どれを使うかは人が選び、投稿も手動(自動投稿しない)
+            results.append({
+                "slug": slug, "date": date_str, "text": text, "status": "new",
+                "type": post_type, "draft": True,
+            })
 
     # サマリJSON出力:
     #   --only 指定時は、既存のサマリJSONとマージして全アカ分を保持
@@ -341,12 +341,12 @@ def main():
     if target_slugs and summary_path.exists():
         try:
             existing = json.loads(summary_path.read_text(encoding="utf-8"))
-            existing_map = {e["slug"]: e for e in existing if isinstance(e, dict) and "slug" in e}
+            existing_map = {(e["slug"], e.get("type", "")): e for e in existing if isinstance(e, dict) and "slug" in e}
         except Exception:
             existing_map = {}
         for r in results:
-            existing_map[r["slug"]] = r
-        merged = sorted(existing_map.values(), key=lambda x: x.get("slug", ""))
+            existing_map[(r["slug"], r.get("type", ""))] = r
+        merged = sorted(existing_map.values(), key=lambda x: (x.get("slug", ""), x.get("type", "")))
         summary_path.write_text(json.dumps(merged, ensure_ascii=False, indent=2), encoding="utf-8")
         print(f"\nSummary updated (merged): {summary_path.relative_to(REPO_ROOT)} ({len(merged)} entries)")
     else:

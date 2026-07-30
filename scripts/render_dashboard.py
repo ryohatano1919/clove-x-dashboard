@@ -71,6 +71,17 @@ def load_handle_map() -> dict:
 # 全体ダッシュボード (index.html)
 # =========================
 
+TYPE_LABELS = {"nichijo": "日常", "ninchi": "認知", "shinrai": "信頼(要差し替え)"}
+
+
+def type_badge(item: dict) -> str:
+    label = TYPE_LABELS.get(item.get("type", ""))
+    if not label:
+        return ""
+    color = "#e0a800" if item.get("type") == "shinrai" else "#1d9bf0"
+    return f'<span class="type-badge" style="background:{color};color:#fff;border-radius:10px;padding:2px 10px;font-size:12px;">{label}</span>'
+
+
 def render_card_for_index(item: dict, handle_map: dict) -> str:
     slug = item["slug"]
     text = item["text"]
@@ -88,6 +99,7 @@ def render_card_for_index(item: dict, handle_map: dict) -> str:
       <header class="card-header">
         <span class="slug">{html.escape(slug)}</span>
         <span class="handle">{handle_display}</span>
+        {type_badge(item)}
         <span class="char-count">{char_count}字</span>
       </header>
       <div class="profile">{profile_html}</div>
@@ -277,19 +289,35 @@ def render_index_html(date_str: str, items: list[dict], handle_map: dict) -> str
 # アカウント別ページ ({slug}.html)
 # =========================
 
-def render_account_html(date_str: str, item: dict, handle: str) -> str:
-    slug = item["slug"]
-    text = item["text"]
+def render_account_html(date_str: str, items: list, handle: str) -> str:
+    slug = items[0]["slug"]
     profile_raw = load_persona_summary(slug) or "(プロフィール未取得)"
-    text_encoded = urllib.parse.quote(text)
-    intent_url = f"https://twitter.com/intent/tweet?text={text_encoded}"
-    char_count = len(text)
 
     handle_display = handle if handle else "(handle未設定)"
     handle_safe = html.escape(handle_display)
-
-    text_html = html.escape(text).replace("\n", "<br>")
     profile_html = html.escape(profile_raw).replace("\n", "<br>")
+
+    cards = []
+    for item in items:
+        text = item["text"]
+        text_encoded = urllib.parse.quote(text)
+        intent_url = f"https://twitter.com/intent/tweet?text={text_encoded}"
+        text_html = html.escape(text).replace("\n", "<br>")
+        note = ""
+        if item.get("type") == "shinrai":
+            note = '<p style="color:#e0a800;font-size:13px;margin:8px 0 0;">⚠️ カード名・金額を実際に引いた内容に差し替えてから投稿</p>'
+        cards.append(f"""    <article class="card" data-slug="{html.escape(slug)}">
+      <header class="card-header">
+        <span class="slug">{html.escape(slug)}</span>
+        {type_badge(item)}
+        <span class="char-count">{len(text)}字</span>
+      </header>
+      <div class="post-text">{text_html}</div>{note}
+      <a class="post-button disabled post-btn" href="{intent_url}" target="_blank" rel="noopener noreferrer">
+        🐦 この案で投稿する
+      </a>
+    </article>""")
+    cards_html = "\n".join(cards)
 
     return f"""<!DOCTYPE html>
 <html lang="ja">
@@ -309,48 +337,38 @@ def render_account_html(date_str: str, item: dict, handle: str) -> str:
       <p>専用です。他のアカウントでログイン中の場合は投稿しないでください。</p>
     </div>
 
-    <article class="card" data-slug="{html.escape(slug)}">
-      <header class="card-header">
-        <span class="slug">{html.escape(slug)}</span>
-        <span class="char-count">{char_count}字</span>
-      </header>
-      <div class="profile">{profile_html}</div>
-      <div class="post-text">{text_html}</div>
+    <div class="profile">{profile_html}</div>
 
-      <label class="login-check" id="login-label">
-        <input type="checkbox" id="login-confirm">
-        <span>👆 {handle_safe} でログイン中であることを確認しました</span>
-      </label>
+    <label class="login-check" id="login-label">
+      <input type="checkbox" id="login-confirm">
+      <span>👆 {handle_safe} でログイン中であることを確認しました</span>
+    </label>
 
-      <a class="post-button disabled" id="post-btn" href="{intent_url}" target="_blank" rel="noopener noreferrer">
-        🐦 X で投稿する
-      </a>
-    </article>
+{cards_html}
 
     <a class="back-link" href="index.html">← 全体ダッシュボードに戻る</a>
   </main>
 
   <script>
     const checkbox = document.getElementById('login-confirm');
-    const btn = document.getElementById('post-btn');
+    const btns = document.querySelectorAll('.post-btn');
     const label = document.getElementById('login-label');
 
     checkbox.addEventListener('change', function() {{
-      if (this.checked) {{
-        btn.classList.remove('disabled');
-        label.classList.add('checked');
-      }} else {{
-        btn.classList.add('disabled');
-        label.classList.remove('checked');
-      }}
+      btns.forEach(function(btn) {{
+        btn.classList.toggle('disabled', !checkbox.checked);
+      }});
+      label.classList.toggle('checked', checkbox.checked);
     }});
 
-    btn.addEventListener('click', function(e) {{
-      if (!checkbox.checked) {{
-        e.preventDefault();
-        alert('まず "ログイン中であることを確認しました" にチェックを入れてください');
-        return false;
-      }}
+    btns.forEach(function(btn) {{
+      btn.addEventListener('click', function(e) {{
+        if (!checkbox.checked) {{
+          e.preventDefault();
+          alert('まず "ログイン中であることを確認しました" にチェックを入れてください');
+          return false;
+        }}
+      }});
     }});
   </script>
 </body>
@@ -383,12 +401,14 @@ def main():
     (DOCS_DIR / "index.html").write_text(index_html, encoding="utf-8")
     print(f"Rendered: docs/index.html ({len(items)} cards)")
 
-    # 個別ページ
-    individual_count = 0
+    # 個別ページ(1アカウント=複数候補をまとめて1ページに)
+    by_slug: dict[str, list] = {}
     for item in items:
-        slug = item["slug"]
+        by_slug.setdefault(item["slug"], []).append(item)
+    individual_count = 0
+    for slug, slug_items in by_slug.items():
         handle = handle_map.get(slug, "")
-        account_html = render_account_html(date_str, item, handle)
+        account_html = render_account_html(date_str, slug_items, handle)
         (DOCS_DIR / f"{slug}.html").write_text(account_html, encoding="utf-8")
         individual_count += 1
 

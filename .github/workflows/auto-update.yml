@@ -2,7 +2,8 @@ name: Auto regenerate posts
 
 on:
   schedule:
-    - cron: '0 0,4,8,12 * * *'
+    # 毎朝9時JSTに1回。候補は人が選んで手動投稿するため多重生成は不要
+    - cron: '0 0 * * *'
   workflow_dispatch:
 
 jobs:
@@ -26,11 +27,13 @@ jobs:
       - name: Regenerate today's posts and dashboard
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SHEET_WEBHOOK_URL: ${{ secrets.SHEET_WEBHOOK_URL }}
           TZ: Asia/Tokyo
         run: |
           python3 scripts/fetch_benchmark_posts.py || echo "benchmark fetch failed, continuing without samples"
           python3 scripts/generate_daily_posts.py --overwrite
           python3 scripts/render_dashboard.py
+          python3 scripts/push_candidates_to_sheet.py || echo "sheet push failed"
 
       - name: Commit and push if changed
         run: |
