@@ -18,6 +18,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import os
 import json
 import random
 import re
@@ -278,7 +279,9 @@ def main():
         now_jst = datetime.now(JST)
         date_str = now_jst.strftime("%Y-%m-%d")
 
-    client = anthropic.Anthropic()
+    # Secrets登録時に紛れ込んだ改行・空白でHTTPヘッダが壊れるのを防ぐ
+    api_key = (os.environ.get("ANTHROPIC_API_KEY") or "").strip()
+    client = anthropic.Anthropic(api_key=api_key or None)
     target_slugs = set(args.only.split(",")) if args.only else None
 
     # ペルソナがあるアカウントだけを対象に

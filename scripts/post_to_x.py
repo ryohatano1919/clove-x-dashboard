@@ -110,7 +110,7 @@ def generate_post(now_jst: datetime) -> str:
 
     prompt = build_prompt(persona, examples, rules, recent, now_jst)
 
-    client = anthropic.Anthropic()
+    client = (lambda k: anthropic.Anthropic(api_key=k or None))((os.environ.get("ANTHROPIC_API_KEY") or "").strip())
     response = client.messages.create(
         model=CLAUDE_MODEL,
         max_tokens=400,

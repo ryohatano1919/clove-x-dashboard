@@ -14,6 +14,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import os
 import csv
 import random
 import sys
@@ -228,7 +229,7 @@ def main():
     parser.add_argument("--attrs-file", help="Path to CSV/TSV with attributes (overrides built-in defaults)", default=None)
     args = parser.parse_args()
 
-    client = anthropic.Anthropic()
+    client = (lambda k: anthropic.Anthropic(api_key=k or None))((os.environ.get("ANTHROPIC_API_KEY") or "").strip())
     target_slugs = set(args.only.split(",")) if args.only else None
 
     # 属性マップ構築:

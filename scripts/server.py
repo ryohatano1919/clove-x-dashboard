@@ -409,7 +409,7 @@ class Handler(BaseHTTPRequestHandler):
             return self._send_json(500, {"error": "ANTHROPIC_API_KEY not set in server environment"})
 
         import anthropic
-        client = anthropic.Anthropic()
+        client = (lambda k: anthropic.Anthropic(api_key=k or None))((os.environ.get("ANTHROPIC_API_KEY") or "").strip())
 
         now_jst = datetime.fromisoformat(f"{date}T{datetime.now(JST).strftime('%H:%M:%S')}+09:00")
         try:
