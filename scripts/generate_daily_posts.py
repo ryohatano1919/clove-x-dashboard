@@ -256,7 +256,8 @@ def generate_post_for_account(client, slug: str, now_jst: datetime, post_type: s
         except (anthropic.APIStatusError, anthropic.RateLimitError, anthropic.APIConnectionError) as e:
             last_err = e
             wait = 2 ** attempt + random.random()
-            print(f"  [retry {attempt+1}/4] {type(e).__name__}: sleeping {wait:.1f}s", flush=True)
+            cause = repr(getattr(e, "__cause__", None) or getattr(e, "body", None) or e)
+            print(f"  [retry {attempt+1}/4] {type(e).__name__}: {cause[:200]} sleeping {wait:.1f}s", flush=True)
             time.sleep(wait)
     return None, f"all retries failed: {last_err}"
 
